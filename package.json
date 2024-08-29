@@ -10,11 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortune-sheet/core": "^0.19.13",
     "@fortune-sheet/react": "^0.19.13",
+    "i": "^0.3.7",
+    "npm": "^10.8.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
-    "react-router-dom": "^6.26.1"
+    "react-router-dom": "^6.26.1",
+    "react-use-websocket": "^4.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

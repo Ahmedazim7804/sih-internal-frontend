@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import Sheet from "./features/sheet/sheet";
+import SheetComponent from "./features/sheet/sheet";
 import AuthDialog from "./features/auth/auth_screen";
+import { SheetProvider } from "./features/sheet/providers/sheet_provider";
 
 function App() {
     return (
@@ -8,7 +9,10 @@ function App() {
             <Routes>
                 <Route path="/auth" element={<AuthDialog></AuthDialog>} />
             </Routes>
-            <Sheet></Sheet>
+            <SheetProvider>
+                <></>
+                <SheetComponent></SheetComponent>
+            </SheetProvider>
         </>
     );
 }
