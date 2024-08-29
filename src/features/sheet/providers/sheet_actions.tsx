@@ -7,8 +7,6 @@ export class SheetActions {
     static setData({ data }: { data: CellMatrix }): ISheetAction {
         const dataAsArray: Array<Array<Cell | null>> = data.map((row) => row);
 
-        console.log(dataAsArray);
-
         return {
             type: "SET_DATA",
             payload: dataAsArray,

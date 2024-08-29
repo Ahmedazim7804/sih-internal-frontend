@@ -21,6 +21,8 @@ export default function SheetComponent() {
             <Workbook
                 sheetTabContextMenu={["copy", "delete"]}
                 onChange={(sheetData) => {
+                    console.log(sheetData);
+
                     if (sheetData[0].data == undefined) {
                         return;
                     }
