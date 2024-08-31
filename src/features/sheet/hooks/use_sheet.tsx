@@ -1,12 +1,7 @@
 import { useContext } from "react";
 import { useSheetContext } from "../providers/sheet_provider";
 import { matrixToCellMatrix, stringToMatrix } from "../utils/converter";
-import {
-    Cell,
-    Sheet,
-    CellMatrix,
-    CellWithRowAndCol,
-} from "@fortune-sheet/core";
+import { Sheet, CellMatrix, CellWithRowAndCol } from "@fortune-sheet/core";
 
 export default function useSheet() {
     const { sheet, setSheet, updateData } = useSheetContext();

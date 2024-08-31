@@ -1,5 +1,6 @@
 import { useSocketContext } from "../providers/socket_context";
 import { Cell } from "@fortune-sheet/core";
+import { io } from "socket.io-client";
 
 export function useSocket() {
     const socket = useSocketContext();
@@ -12,20 +13,27 @@ export function useSocket() {
         socket.disconnect();
     }
 
-    function subscribe(event: string, callback: (data: string) => void) {
-        socket.on(event, callback);
+    function subscribe() {
+        socket.emit("subscribe", {
+            SpreadSheetId: "123",
+        });
     }
 
     function unsubscribe(event: string) {
         socket.off(event);
     }
 
-    function send(event: string, data: Cell) {
-        socket.emit(event, data);
+    function send(event: string) {
+        socket.emit("state", {
+            SpreadSheetId: "123",
+            data: "Hello",
+        });
     }
 
-    function receive(event: string, callback: (data: Cell) => void) {
-        socket.on(event, callback);
+    function receive() {
+        socket.on("state", (data) => {
+            console.log(data);
+        });
     }
 
     return { connect, disconnect, subscribe, unsubscribe, send, receive };
