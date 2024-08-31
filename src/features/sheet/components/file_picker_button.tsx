@@ -3,6 +3,7 @@ import { FaShareAlt } from "react-icons/fa";
 import { MdFileOpen } from "react-icons/md";
 import { useFilePicker } from "use-file-picker";
 import useSheet from "../hooks/use_sheet";
+import { IconContext } from "react-icons";
 
 export default function FilePickerButton() {
     const { loadDataFromCsv } = useSheet();
@@ -16,11 +17,10 @@ export default function FilePickerButton() {
     });
 
     return (
-        <button
-            onClick={() => openFilePicker()}
-            className="px-4 ml-auto py-2 my-2 hover:bg-purple-500 hover:-translate-y-1 hover:shadow-[1px_7px_0_0_#3b0764] shadow-[1px_3px_0_0_#3b0764] bg-purple-500 text-white rounded-full"
-        >
-            <MdFileOpen className="inline-block" />
+        <button className="ml-auto my-2 text-gray-900 bg-[#F7BE38] hover:bg-[#F7BE38]/90 hover:ring-4 focus:ring-[#F7BE38]/50 font-medium rounded-full text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#F7BE38]/50 me-2 mb-2">
+            <IconContext.Provider value={{ color: "White", size: "24px" }}>
+                <MdFileOpen className="inline-block" />
+            </IconContext.Provider>
         </button>
     );
 }

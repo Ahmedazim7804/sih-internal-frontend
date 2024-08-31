@@ -55,8 +55,8 @@ export default function TopBar() {
             >
                 Subscribe
             </button>
-            {/* <ShareButton /> */}
-            <FilePickerButton />
+            <ShareButton />
+            {/* <FilePickerButton /> */}
         </div>
     );
 }
