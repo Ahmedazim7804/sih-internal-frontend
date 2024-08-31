@@ -8,6 +8,9 @@ export default function TopBar() {
             <p>SmartSheets</p>
             {/* <ShareButton /> */}
             <FilePickerButton />
+            
+            <img src="./img/logo.PNG" alt="logo" style={{ width: '185px', height: '65px',padding: '10px' ,  borderRadius: '20px',}}   />
+            <ShareButton  />
         </div>
     );
 }
