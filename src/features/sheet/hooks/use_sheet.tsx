@@ -10,8 +10,13 @@ export default function useSheet() {
         const matrix = stringToMatrix(data);
         const cellMatrix = matrixToCellMatrix(matrix);
 
+        saveToLocalStorage(cellMatrix);
         setSheet(cellMatrix);
         updateData();
+    }
+
+    async function saveToLocalStorage(data: CellWithRowAndCol[]) {
+        await localStorage.setItem("sheet", JSON.stringify(data));
     }
 
     function syncData(data: Sheet[]) {
@@ -34,11 +39,9 @@ export default function useSheet() {
             }
         }
 
-        if (cellWithRowAndCol === sheet) {
-            return;
-        }
-
         setSheet(cellWithRowAndCol);
+
+        saveToLocalStorage(cellWithRowAndCol);
     }
 
     return { loadDataFromCsv, syncData };

@@ -1,4 +1,11 @@
-import { createContext, useContext, useRef, useState } from "react";
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { ISheetAction } from "../interfaces/sheer_action_interface";
 import { Cell, CellWithRowAndCol } from "@fortune-sheet/core";
 import useSheet from "../hooks/use_sheet";
@@ -20,6 +27,15 @@ export const SheetContext = createContext<ISheetContext>({
 export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
     const sheet = useRef<Array<CellWithRowAndCol>>([]);
     const [key, updateKey] = useState(0);
+
+    useEffect(() => {
+        const savedSheet = localStorage.getItem("sheet");
+
+        if (savedSheet != null) {
+            sheet.current = JSON.parse(savedSheet);
+            updateData();
+        }
+    }, []);
 
     function updateData() {
         updateKey(key + 1);
