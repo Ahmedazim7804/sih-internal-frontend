@@ -54,7 +54,6 @@ export default function ShareScreen() {
                     </button>
                 </div>
             </div>
-            Button
         </div>
     );
 }

@@ -3,6 +3,7 @@ import ShareButton from "./components/share_button";
 import { useSocketContext } from "./providers/socket_context";
 import { io } from "socket.io-client";
 import FilePickerButton from "./components/file_picker_button";
+import ProfileComponent from "./components/profile_component";
 
 export default function TopBar() {
     const socket = useSocketContext();
@@ -58,6 +59,7 @@ export default function TopBar() {
             <div className="ml-auto flex">
                 <FilePickerButton></FilePickerButton>
                 <ShareButton />
+                <ProfileComponent />
             </div>
         </div>
     );
