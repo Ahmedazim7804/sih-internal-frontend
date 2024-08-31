@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
@@ -8,6 +8,13 @@ export default function AuthDialog() {
     const [serverError, setServerError] = useState<string>("");
     const [showLogin, setShowLogin] = useState<boolean>(false);
 
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token != null && token.length > 0) {
+            navigate("/");
+        }
+    }, [navigate]);
+
     const signUpForm = useFormik({
         initialValues: {
             name: "",
@@ -15,8 +22,7 @@ export default function AuthDialog() {
             password: "",
         },
         validationSchema: Yup.object({
-            name: Yup.string()
-                .required("Name is required."),
+            name: Yup.string().required("Name is required."),
             email: Yup.string()
                 .required("Email is required.")
                 .email("Please enter a valid email."),
@@ -28,15 +34,18 @@ export default function AuthDialog() {
             console.log(values);
             setServerError("");
             try {
-                const response = await fetch("https://sih-internal-backend-pm7h.onrender.com/auth/signup", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        name: values.name,
-                        password: values.password,
-                        email: values.email
-                    })
-                });
+                const response = await fetch(
+                    "https://sih-internal-backend-pm7h.onrender.com/auth/signup",
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            name: values.name,
+                            password: values.password,
+                            email: values.email,
+                        }),
+                    }
+                );
                 const data = await response.json();
                 if (response.ok) {
                     console.log("data : ", data);
@@ -45,14 +54,22 @@ export default function AuthDialog() {
                         showSnackbar();
                         navigate("/");
                     } else {
-                        setServerError(data.message || "There is some problem in creating your account.");
+                        setServerError(
+                            data.message ||
+                                "There is some problem in creating your account."
+                        );
                     }
                 } else {
-                    setServerError(data.message || "There is some problem in creating your account.");
+                    setServerError(
+                        data.message ||
+                            "There is some problem in creating your account."
+                    );
                 }
             } catch (error) {
                 console.error(error);
-                setServerError("There is some problem in creating your account.");
+                setServerError(
+                    "There is some problem in creating your account."
+                );
             }
         },
     });
@@ -74,14 +91,17 @@ export default function AuthDialog() {
             console.log(values);
             setServerError("");
             try {
-                const response = await fetch("https://sih-internal-backend-pm7h.onrender.com/auth/login", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        password: values.password,
-                        email: values.email
-                    })
-                });
+                const response = await fetch(
+                    "https://sih-internal-backend-pm7h.onrender.com/auth/login",
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            password: values.password,
+                            email: values.email,
+                        }),
+                    }
+                );
                 const data = await response.json();
                 if (response.ok) {
                     console.log("data : ", data);
@@ -90,10 +110,15 @@ export default function AuthDialog() {
                         showSnackbar();
                         navigate("/");
                     } else {
-                        setServerError(data.message || "There is some problem in logging in.");
+                        setServerError(
+                            data.message ||
+                                "There is some problem in logging in."
+                        );
                     }
                 } else {
-                    setServerError(data.message || "There is some problem in logging in.");
+                    setServerError(
+                        data.message || "There is some problem in logging in."
+                    );
                 }
             } catch (error) {
                 console.error(error);
@@ -111,7 +136,9 @@ export default function AuthDialog() {
             x.className = "show";
 
             // After 3 seconds, remove the show class from DIV
-            setTimeout(() => { x.className = x.className.replace("show", ""); }, 3000);
+            setTimeout(() => {
+                x.className = x.className.replace("show", "");
+            }, 3000);
         }
     };
 
@@ -124,7 +151,10 @@ export default function AuthDialog() {
                     </h1>
                     <div className="w-full">
                         {showLogin ? (
-                            <form onSubmit={loginForm.handleSubmit} className="space-y-4">
+                            <form
+                                onSubmit={loginForm.handleSubmit}
+                                className="space-y-4"
+                            >
                                 <input
                                     className="w-full px-4 py-2 rounded-lg bg-gray-100 border border-gray-200 text-sm focus:outline-none focus:border-gray-400"
                                     type="email"
@@ -132,7 +162,9 @@ export default function AuthDialog() {
                                     {...loginForm.getFieldProps("email")}
                                 />
                                 {loginForm.errors.email && (
-                                    <p className="text-red-600 text-xs">{loginForm.errors.email}</p>
+                                    <p className="text-red-600 text-xs">
+                                        {loginForm.errors.email}
+                                    </p>
                                 )}
                                 <input
                                     className="w-full px-4 py-2 rounded-lg bg-gray-100 border border-gray-200 text-sm focus:outline-none focus:border-gray-400"
@@ -141,10 +173,14 @@ export default function AuthDialog() {
                                     {...loginForm.getFieldProps("password")}
                                 />
                                 {loginForm.errors.password && (
-                                    <p className="text-red-600 text-xs">{loginForm.errors.password}</p>
+                                    <p className="text-red-600 text-xs">
+                                        {loginForm.errors.password}
+                                    </p>
                                 )}
                                 {serverError && (
-                                    <p className="text-red-600 text-xs">{serverError}</p>
+                                    <p className="text-red-600 text-xs">
+                                        {serverError}
+                                    </p>
                                 )}
                                 <button
                                     type="submit"
@@ -154,7 +190,10 @@ export default function AuthDialog() {
                                 </button>
                             </form>
                         ) : (
-                            <form onSubmit={signUpForm.handleSubmit} className="space-y-4">
+                            <form
+                                onSubmit={signUpForm.handleSubmit}
+                                className="space-y-4"
+                            >
                                 <input
                                     className="w-full px-4 py-2 rounded-lg bg-gray-100 border border-gray-200 text-sm focus:outline-none focus:border-gray-400"
                                     type="text"
@@ -162,7 +201,9 @@ export default function AuthDialog() {
                                     {...signUpForm.getFieldProps("name")}
                                 />
                                 {signUpForm.errors.name && (
-                                    <p className="text-red-600 text-xs">{signUpForm.errors.name}</p>
+                                    <p className="text-red-600 text-xs">
+                                        {signUpForm.errors.name}
+                                    </p>
                                 )}
                                 <input
                                     className="w-full px-4 py-2 rounded-lg bg-gray-100 border border-gray-200 text-sm focus:outline-none focus:border-gray-400"
@@ -171,7 +212,9 @@ export default function AuthDialog() {
                                     {...signUpForm.getFieldProps("email")}
                                 />
                                 {signUpForm.errors.email && (
-                                    <p className="text-red-600 text-xs">{signUpForm.errors.email}</p>
+                                    <p className="text-red-600 text-xs">
+                                        {signUpForm.errors.email}
+                                    </p>
                                 )}
                                 <input
                                     className="w-full px-4 py-2 rounded-lg bg-gray-100 border border-gray-200 text-sm focus:outline-none focus:border-gray-400"
@@ -180,10 +223,14 @@ export default function AuthDialog() {
                                     {...signUpForm.getFieldProps("password")}
                                 />
                                 {signUpForm.errors.password && (
-                                    <p className="text-red-600 text-xs">{signUpForm.errors.password}</p>
+                                    <p className="text-red-600 text-xs">
+                                        {signUpForm.errors.password}
+                                    </p>
                                 )}
                                 {serverError && (
-                                    <p className="text-red-600 text-xs">{serverError}</p>
+                                    <p className="text-red-600 text-xs">
+                                        {serverError}
+                                    </p>
                                 )}
                                 <button
                                     type="submit"
@@ -194,7 +241,9 @@ export default function AuthDialog() {
                             </form>
                         )}
                         <p className="mt-4 text-xs text-gray-600 text-center">
-                            {showLogin ? "Don't have an account?" : "Already have an account?"}
+                            {showLogin
+                                ? "Don't have an account?"
+                                : "Already have an account?"}
                             <button
                                 onClick={() => setShowLogin(!showLogin)}
                                 className="ml-1 text-indigo-500 hover:underline"
