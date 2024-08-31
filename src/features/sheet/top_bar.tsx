@@ -25,7 +25,16 @@ export default function TopBar() {
 
     return (
         <div className="w-full h-fit flex items-center">
-            <p>SmartSheets</p>
+            <img
+                src="./img/logo.PNG"
+                alt="logo"
+                style={{
+                    width: "185px",
+                    height: "65px",
+                    padding: "10px",
+                    borderRadius: "20px",
+                }}
+            />
             <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 onClick={async () => {
@@ -67,8 +76,7 @@ export default function TopBar() {
             >
                 Subscribe
             </button>
-            {/* <ShareButton /> */}
-            <FilePickerButton />
+            <ShareButton />
         </div>
     );
 }
