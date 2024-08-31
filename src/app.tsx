@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import Sheet from "./features/sheet/sheet";
+import SheetComponent from "./features/sheet/sheet";
 import AuthScreen from "./features/auth/auth_screen";
 
 function App() {
@@ -7,9 +7,12 @@ function App() {
         <>
             <Routes>
                 <Route path="/auth" element={<AuthScreen></AuthScreen>} />
-                <Route path="/" element={<Sheet></Sheet>}></Route>
+                <Route
+                    path="/"
+                    element={<SheetComponent></SheetComponent>}
+                ></Route>
             </Routes>
-            <Sheet></Sheet>
+            <SheetComponent></SheetComponent>
         </>
     );
 }

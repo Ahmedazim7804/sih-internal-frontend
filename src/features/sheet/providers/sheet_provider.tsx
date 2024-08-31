@@ -1,44 +1,48 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 import { ISheetAction } from "../interfaces/sheer_action_interface";
-import { Cell } from "@fortune-sheet/core";
+import { Cell, CellWithRowAndCol } from "@fortune-sheet/core";
+import useSheet from "../hooks/use_sheet";
 
-export const SheetContext = createContext(Array<Array<Cell | null>>());
-export const SheetDispatchContext = createContext<
-    React.Dispatch<ISheetAction> | undefined
->(undefined);
+interface ISheetContext {
+    sheet: Array<CellWithRowAndCol>;
+    setSheet: (data: Array<CellWithRowAndCol>) => void;
+    updateData: () => void;
+    key: number;
+}
+
+export const SheetContext = createContext<ISheetContext>({
+    sheet: [],
+    key: 0,
+    setSheet: (data) => {},
+    updateData: () => {},
+});
 
 export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
-    const [sheet, dispatch] = useReducer(
-        sheetReducer,
-        Array<Array<Cell | null>>()
-    );
+    const sheet = useRef<Array<CellWithRowAndCol>>([]);
+    const [key, updateKey] = useState(0);
+
+    function updateData() {
+        updateKey(key + 1);
+    }
+
+    function setSheet(data: Array<CellWithRowAndCol>) {
+        sheet.current = data;
+    }
 
     return (
-        <SheetContext.Provider value={sheet}>
-            <SheetDispatchContext.Provider value={dispatch}>
-                {children}
-            </SheetDispatchContext.Provider>
+        <SheetContext.Provider
+            value={{
+                sheet: sheet.current,
+                key,
+                setSheet,
+                updateData,
+            }}
+        >
+            {children}
         </SheetContext.Provider>
     );
 }
 
-function sheetReducer(
-    data: Array<Array<Cell | null>>,
-    action: ISheetAction
-): Array<Array<Cell | null>> {
-    switch (action.type) {
-        case "SET_SHEET":
-            return action.payload;
-        case "DELETE_SHEET":
-            return [];
-        default:
-            return data;
-    }
-}
-
 export function useSheetContext() {
     return useContext(SheetContext);
-}
-export function useSheetDispatchContext() {
-    return useContext(SheetDispatchContext);
 }

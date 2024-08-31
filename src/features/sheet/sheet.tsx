@@ -3,19 +3,30 @@ import "@fortune-sheet/react/dist/index.css";
 import { Workbook } from "@fortune-sheet/react";
 import TopBar from "./top_bar";
 import { useNavigate } from "react-router-dom";
+import { useSheetContext } from "./providers/sheet_provider";
+import useSheet from "./hooks/use_sheet";
 
-export default function Sheet() {
+export default function SheetComponent() {
+    const { sheet, key } = useSheetContext();
+    const { syncData } = useSheet();
+
     return (
         <div className="w-full h-full z-0 flex flex-col">
             <TopBar></TopBar>
+
             <Workbook
+                key={key.toString()}
+                onOp={(op) => {
+                    console.log(op);
+                }}
+                onChange={(data) => syncData(data)}
                 data={[
                     {
                         name: "Sheet 1",
+                        celldata: sheet,
                     },
                 ]}
             ></Workbook>
-            //{" "}
         </div>
     );
 }
