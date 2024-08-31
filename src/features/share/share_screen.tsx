@@ -14,7 +14,7 @@ export default function ShareScreen() {
                     navigate("/");
                 }
             }}
-            className="absolute justify-center items-center backdrop-blur-[1px] w-full h-full text-gray-900 bg-black bg-opacity-50 z-10 flex"
+            className="absolute justify-center items-center backdrop-blur-[1px] w-full h-full text-gray-900 bg-transparent bg-opacity-50 z-10 flex"
         >
             <div className="bg-neutral-50 px-4 w-5/12 h-fit flex flex-col overflow-hidden rounded-3xl py-8">
                 <div className="text-xl px-2 mb-2">

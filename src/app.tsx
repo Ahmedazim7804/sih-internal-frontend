@@ -8,10 +8,6 @@ function App() {
         <>
             <Routes>
                 <Route path="/auth" element={<AuthScreen></AuthScreen>} />
-                <Route
-                    path="/"
-                    element={<SheetComponent></SheetComponent>}
-                ></Route>
                 <Route path="/share" element={<ShareScreen />}></Route>
             </Routes>
             <SheetComponent></SheetComponent>
