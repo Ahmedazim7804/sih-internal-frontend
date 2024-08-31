@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import SheetComponent from "./features/sheet/sheet";
 import AuthScreen from "./features/auth/auth_screen";
+import ShareScreen from "./features/share/share_screen";
 
 function App() {
     return (
@@ -11,6 +12,7 @@ function App() {
                     path="/"
                     element={<SheetComponent></SheetComponent>}
                 ></Route>
+                <Route path="/share" element={<ShareScreen />}></Route>
             </Routes>
             <SheetComponent></SheetComponent>
         </>
