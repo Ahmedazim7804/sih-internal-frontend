@@ -2,27 +2,31 @@ import { useEffect, useState } from "react";
 import DashboardTopBar from "./dashboard_top_bar";
 import SpreadSheetList from "./components/spread_sheet_list";
 import useUserSheets from "../../hooks/use_usersheets";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { IUserSheets } from "../../types";
 import useAuth from "../../hooks/use_auth";
+import { useAuthContext } from "../../context/auth_provider";
 
 export default function DashboardScreen() {
     const { data, isPending, error } = useUserSheets();
+    const redirect= useNavigate()
     const [query, setquery] = useState<string>("");
     const [searchData, setSearchData] = useState<IUserSheets>({
         data: [],
         success: false,
     });
-    const { isUserLoggedIn } = useAuth();
+    const { user} = useAuthContext();
 
     useEffect(() => {
-        if (!isUserLoggedIn()) {
+        if (!localStorage.getItem("token")) {
+
             redirect("/");
         }
-    }, [isUserLoggedIn]);
+    }, [user]);
 
     useEffect(() => {
         if (data) {
+            console.log(data)
             setSearchData(data);
         }
     }, [data]);

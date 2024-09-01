@@ -7,19 +7,23 @@ import useCollabrators from "../../hooks/use_collabrators";
 import PeopleWithAccess from "./components/people_with_access";
 import { ThreeDots } from "react-loader-spinner";
 import useaddCollabrators from "../../hooks/use_addCollaborators";
+import { useGetToken } from "../../hooks/auth/useGetToken";
 
 export default function ShareScreen() {
   const navigate = useNavigate();
-  const token = localStorage.getItem("sihtoken");
+  
   const [email, setemail] = React.useState("");
   const [message, setmessage] = React.useState<{ status: "NONE" | "ERROR" | "SUCCESS", message: string }>({ status: "NONE", message: "" })
   const { isPending, error, data } = useCollabrators({
     spreadsheetId: "3",
-    token: token!,
+    token : useGetToken()  
   });
 
 async function  addCollaborators(spreadsheetId: string, email: string) {
-    console.log(email)
+    if(!useGetToken()) {
+      setmessage({status: "ERROR", message: "Please login to add a collaborator"})
+      return
+    }
     const res = await  fetch(
         `https://sih-internal-backend-pm7h.onrender.com/collaborators/create?SpreadSheetID=${spreadsheetId}&email=${email}`,
         
@@ -27,7 +31,7 @@ async function  addCollaborators(spreadsheetId: string, email: string) {
             method:"POST",
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI1MDk4MDEyLCJleHAiOjE3MjUxODQ0MTJ9.ZfCHS3knF3zOdgrlx3YL5PEWGfA-VSGt8GWGz2mEmv0`,
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
                 Accept: "/",
             },
         }
@@ -37,7 +41,7 @@ async function  addCollaborators(spreadsheetId: string, email: string) {
       setmessage({status: "SUCCESS", message: "Collaborator added successfully"})
     }
     else{
-      setmessage({status: "ERROR", message: data.message})
+      setmessage({status: "ERROR", message: data.msg})
     }
     
 }
@@ -51,7 +55,7 @@ async function  addCollaborators(spreadsheetId: string, email: string) {
       }}
       className="absolute justify-center items-center backdrop-blur-[1px] w-full h-full text-gray-900 bg-transparent bg-opacity-50 z-10 flex"
     >
-      {token ? (
+      {useGetToken() ? (
         <div className="bg-neutral-50 px-4 w-5/12 h-fit flex flex-col overflow-hidden rounded-3xl py-8">
           <div className="text-xl px-2 mb-2">
             <p>Share SpreadSheet</p>

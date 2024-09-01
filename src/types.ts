@@ -43,3 +43,12 @@ export interface ISheetAction {
     type: string;
     payload: any;
 }
+
+export type UserType = {
+    id : number
+
+    name :string
+    email: string
+    password : string
+
+}

@@ -7,9 +7,13 @@ function getCollabrators({
     token,
 }: {
     spreadsheetId: string;
-    token: string;
+    token: string | null;
 }) {
+    if(!token) {
+     return  Promise.resolve({data: []})
+    }
     return fetch(
+
         `https://sih-internal-backend-pm7h.onrender.com/spreadsheet/collaborators?SpreadSheetId=${spreadsheetId}`,
         {
             headers: {
@@ -26,13 +30,12 @@ export default function useCollabrators({
     token
 }: {
     spreadsheetId: string;
-    token: string
+    token: string | null;
 }) {
-    const { user } = useAuthContext();
 
     const { isPending, error, data } = useQuery<ICollabrators>({
         queryKey: ["collabrators"],
-        queryFn: () => getCollabrators({ spreadsheetId, token: user!.token! }),
+        queryFn: () => getCollabrators({ spreadsheetId, token }),
     });
 
     return {

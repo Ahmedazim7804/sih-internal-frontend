@@ -3,10 +3,22 @@ import ShareButton from "./components/share_button";
 
 import FilePickerButton from "./components/file_picker_button";
 import ProfileComponent from "./components/profile_component";
+<<<<<<< HEAD
+=======
+import { useSheetContext } from "../../context/sheet_provider";
+import { useSocket } from "../../hooks/use_socket";
+>>>>>>> 8858db7 (many changes)
 import Logo from "../../components/logo";
 import SocketInfoCompononent from "./components/socket_info_compononent";
 
 export default function TopBar() {
+<<<<<<< HEAD
+=======
+    // const { sheet, previousSheet, setSheet, updateData } = useSheetContext();
+    // const { connect, disconnect, listen, send, subscribe, stopListen } =
+        useSocket();
+
+>>>>>>> 8858db7 (many changes)
     // useEffect(() => {
     //     listen("STATE", (data) => {
     //         console.log(data.data);

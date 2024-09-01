@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { IUserSheets } from "../types" 
 import { useAuthContext } from "../context/auth_provider";
+import { IUserSheets } from "../types";
 
-function getUserSheet(token: string) {
-    console.log(token);
+function getUserSheet(token: string | null) {
+    if(!token){
+        return Error("Token not found")
+    }
     return fetch(
         "https://sih-internal-backend-pm7h.onrender.com/spreadsheet/",
         {
@@ -25,10 +27,14 @@ export default function useUserSheets() {
 
     const { isPending, error, data } = useQuery<IUserSheets>({
         queryKey: ["userSheets"],
-        queryFn: () =>
-            getUserSheet(
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsImlhdCI6MTcyNTE4OTc5NSwiZXhwIjoxNzI1Mjc2MTk1fQ.f9alkmN5hUzHRpRUfHTwXJjH0d5b0TPjlu4_Hao9u8g"
-            ),
+        queryFn: async () => {
+            try {
+                const result = await getUserSheet(localStorage.getItem("token"));
+                return result;
+            } catch (error) {
+                throw new Error("Failed to fetch user sheets");
+            }
+        },
     });
 
     return {

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import useAuth from "../../hooks/use_auth";
 import { ThreeDots } from "react-loader-spinner";
+import { useGetToken } from "../../hooks/auth/useGetToken";
+import { useIsTokenExpired } from "../../hooks/auth/useIsTokenExpired";
 
 export default function AuthDialog() {
     const navigate = useNavigate();
@@ -15,9 +17,9 @@ export default function AuthDialog() {
     const { signIn, signUp } = useAuth();
 
     useEffect(() => {
-        const token = localStorage.getItem("sihtoken");
-        if (token != null && token.length > 0) {
-            navigate("/");
+        const token  = useGetToken()
+        if (token && useIsTokenExpired(token)) {
+            navigate("/auth");
         }
     }, [navigate]);
 

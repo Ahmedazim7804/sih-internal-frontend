@@ -1,4 +1,3 @@
-import React from "react";
 import { MdFileOpen } from "react-icons/md";
 import { useFilePicker } from "use-file-picker";
 import { IconContext } from "react-icons";
@@ -10,7 +9,7 @@ export default function FilePickerButton() {
     const { openFilePicker } = useFilePicker({
         accept: ".csv",
         multiple: false,
-        onFilesSuccessfullySelected: (file) => {
+        onFilesSuccessfullySelected: (file: { filesContent: { content: string; }[]; }) => {
             loadDataFromCsv(file.filesContent[0].content);
         },
     });

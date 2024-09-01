@@ -1,62 +1,61 @@
 import { useAuthContext } from "../context/auth_provider";
 import { jwtDecode } from "jwt-decode";
 export default function useAuth() {
-    const { user, setUser } = useAuthContext();
 
-    function isUserLoggedIn(): boolean {
-        if (user == null) {
-            return false;
-        }
+    // function isUserLoggedIn(): boolean {
+    //     if (user == null) {
+    //         return false;
+    //     }
 
-        if (user.token == null) {
-            return false;
-        }
+    //     if (user.token == null) {
+    //         return false;
+    //     }
 
-        const decodedToken = jwtDecode(user.token);
+    //     const decodedToken = jwtDecode(user.token);
 
-        if (decodedToken.exp == null) {
-            return false;
-        }
+    //     if (decodedToken.exp == null) {
+    //         return false;
+    //     }
 
-        const dateNow = new Date();
+    //     const dateNow = new Date();
 
-        if (decodedToken.exp < dateNow.getTime()) {
-            return false;
-        }
+    //     if (decodedToken.exp < dateNow.getTime()) {
+    //         return false;
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
-    async function getUserDetails(token: string): Promise<boolean> {
-        try {
-            const response = await fetch(
-                "https://sih-internal-backend-pm7h.onrender.com/auth/user",
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+    // async function getUserDetails(token: string): Promise<boolean> {
+    //     try {
+    //         const response = await fetch(
+    //             "https://sih-internal-backend-pm7h.onrender.com/auth/user",
+    //             {
+    //                 method: "GET",
+    //                 headers: {
+    //                     Authorization: `Bearer ${token}`,
+    //                 },
+    //             }
+    //         );
 
-            const data = await response.json();
+    //         const data = await response.json();
 
-            if (!response.ok || !data.success) {
-                return false;
-            }
+    //         if (!response.ok || !data.success) {
+    //             return false;
+    //         }
 
-            const userData = {
-                name: data.user.name,
-                email: data.user.email,
-                token: token,
-                userId: data.user.id,
-            };
-            setUser(userData);
-            return true;
-        } catch {
-            return false;
-        }
-    }
+    //         const userData = {
+    //             name: data.user.name,
+    //             email: data.user.email,
+    //             token: token,
+    //             userId: data.user.id,
+    //         };
+    //         setUser(userData);
+    //         return true;
+    //     } catch {
+    //         return false;
+    //     }
+    // }
 
     async function signUp({
         values,
@@ -88,13 +87,9 @@ export default function useAuth() {
 
             localStorage.setItem("token", data.token);
 
-            const success = await getUserDetails(data.token);
+return null
 
-            if (!success) {
-                return "There is some problem in creating your account.";
-            }
 
-            return null;
         } catch {
             return "There is some problem in creating your account.";
         }
@@ -125,24 +120,17 @@ export default function useAuth() {
 
             localStorage.setItem("token", data.token);
 
-            const success = await getUserDetails(data.token);
-
-            if (success) {
-                return "There is some problem in creating your account.";
-            }
+            
 
             return null;
         } catch {
             return "There is some problem in logging in.";
         }
     }
-    async function signOut() {}
 
     return {
         signIn,
-        getUserDetails,
-        isUserLoggedIn,
+        // isUserLoggedIn,
         signUp,
-        signOut,
     };
 }

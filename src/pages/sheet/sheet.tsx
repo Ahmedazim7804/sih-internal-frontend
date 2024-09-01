@@ -7,8 +7,18 @@ import { useSheetContext } from "../../context/sheet_provider";
 import { Op } from "@fortune-sheet/core";
 import { useSocket } from "../../hooks/use_socket";
 import useSheet from "../../hooks/use_sheet";
+import { useNavigate } from "react-router-dom";
 
 export default function Sheet() {
+    const navigation= useNavigate();
+    useEffect(() => {
+        if (!localStorage.getItem("token")) {
+            navigation("/");
+        }
+        else{
+            navigation("/dashboard");
+        }
+    }, [navigation]);
     const { sheet, key, executeOperation, setWorkBookInstance } =
         useSheetContext();
     const { connect, disconnect, listen, send, subscribe, stopListen } =

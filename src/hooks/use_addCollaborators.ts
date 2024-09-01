@@ -8,9 +8,12 @@ async function addCollaborators({
     email,
 }: {
     spreadsheetId: string;
-    token: string;
+    token: string | null;
     email: string;
 }) {
+    if(!token) {
+     return Error("Token not found")
+    }
     const res = await fetch(
         `https://sih-internal-backend-pm7h.onrender.com/spreadsheet/collaborators/create?SpreadSheetId=${spreadsheetId}&email=${email}`,
 
@@ -40,7 +43,7 @@ export default function useAddCollabrators({
             addCollaborators({
                 spreadsheetId: spreadsheetId,
                 email: user!.email,
-                token: user!.token!,
+                token: localStorage.getItem("token"),
             }),
     });
 
