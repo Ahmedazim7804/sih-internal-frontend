@@ -6,6 +6,7 @@ import FilePickerButton from "./components/file_picker_button";
 import ProfileComponent from "./components/profile_component";
 import { useSheetContext } from "./providers/sheet_provider";
 import { useSocket } from "./hooks/use_socket";
+import Logo from "../../components/logo";
 
 export default function TopBar() {
     const { sheet, setSheet, updateData } = useSheetContext();
@@ -28,16 +29,7 @@ export default function TopBar() {
 
     return (
         <div className="w-full h-fit flex items-center">
-            <img
-                src="./img/logo.PNG"
-                alt="logo"
-                style={{
-                    width: "185px",
-                    height: "65px",
-                    padding: "10px",
-                    borderRadius: "20px",
-                }}
-            />
+            <Logo />
             <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 onClick={() => connect()}
