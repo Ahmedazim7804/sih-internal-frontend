@@ -1,27 +1,31 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { CellWithRowAndCol, Op } from "@fortune-sheet/core";
+import { WorkbookInstance } from "@fortune-sheet/react";
 
 interface ISheetContext {
     sheet: Array<CellWithRowAndCol>;
-    previousSheet: Array<CellWithRowAndCol>;
     setSheet: (data: Array<CellWithRowAndCol>) => void;
+    setWorkBookInstance: (data: WorkbookInstance | null) => void;
     updateData: () => void;
+    wbInstance: WorkbookInstance | null;
     executeOperation: (operation: Op) => void;
     key: number;
 }
 
 export const SheetContext = createContext<ISheetContext>({
     sheet: [],
-    previousSheet: [],
     key: 0,
     setSheet: (data) => {},
+    setWorkBookInstance: (data) => {},
+    wbInstance: null,
     updateData: () => {},
     executeOperation: (operation) => {},
 });
 
 export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
     const sheet = useRef<Array<CellWithRowAndCol>>([]);
-    const previousSheet = useRef<Array<CellWithRowAndCol>>([]);
+
+    const wbInstance = useRef<WorkbookInstance | null>(null);
 
     const [key, updateKey] = useState(0);
 
@@ -39,26 +43,32 @@ export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
     }
 
     function setSheet(data: Array<CellWithRowAndCol>) {
-        previousSheet.current = sheet.current;
-
         sheet.current = data;
     }
 
-    function executeOperation(operation: Op) {
-        const row = operation.path[1] as number;
-        const column = operation.path[2] as number;
+    function setWorkBookInstance(instance: WorkbookInstance | null) {
+        if (instance == null) {
+            return;
+        }
+        wbInstance.current = instance;
+    }
 
-        const index = row * 100 + column;
+    function executeOperation(operation: Op) {
+        const row = operation.path[1] as number | null | undefined;
+        const column = operation.path[2] as number | null | undefined;
+
+        if (
+            row == null ||
+            row == undefined ||
+            column == null ||
+            column == undefined
+        ) {
+            return;
+        }
 
         switch (operation.op) {
             case "add":
-                sheet.current[index] = {
-                    r: row,
-                    c: column,
-                    v: operation.value,
-                };
-                updateData();
-
+                wbInstance.current?.setCellValue(row, column, operation.value);
                 break;
             case "addSheet":
                 break;
@@ -69,22 +79,12 @@ export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
             case "insertRowCol":
                 break;
             case "remove":
-                sheet.current[index] = {
-                    r: row,
-                    c: column,
-                    v: null,
-                };
-                updateData();
+                wbInstance.current?.setCellValue(row, column, null);
 
                 break;
             case "replace":
-                sheet.current[index] = {
-                    r: row,
-                    c: column,
-                    v: operation.value,
-                };
+                wbInstance.current?.setCellValue(row, column, operation.value);
 
-                updateData();
                 break;
             default:
                 break;
@@ -95,7 +95,8 @@ export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
         <SheetContext.Provider
             value={{
                 sheet: sheet.current,
-                previousSheet: previousSheet.current,
+                wbInstance: wbInstance.current,
+                setWorkBookInstance,
                 executeOperation,
                 key,
                 setSheet,

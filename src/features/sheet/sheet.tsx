@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import "@fortune-sheet/react/dist/index.css";
-import { Workbook } from "@fortune-sheet/react";
+import { Workbook, WorkbookInstance } from "@fortune-sheet/react";
 import TopBar from "./top_bar";
 import { useNavigate } from "react-router-dom";
 import { useSheetContext } from "./providers/sheet_provider";
@@ -9,7 +9,8 @@ import { useSocket } from "./hooks/use_socket";
 import { Op } from "@fortune-sheet/core";
 
 export default function Sheet() {
-    const { sheet, key, executeOperation } = useSheetContext();
+    const { sheet, key, executeOperation, setWorkBookInstance } =
+        useSheetContext();
     const { connect, disconnect, listen, send, subscribe, stopListen } =
         useSocket();
 
@@ -19,6 +20,7 @@ export default function Sheet() {
 
             listen("STATE", ({ data }: { data: Op[] }) => {
                 console.log(data);
+
                 data.forEach((operation) => {
                     executeOperation(operation);
                 });
@@ -38,10 +40,19 @@ export default function Sheet() {
             <Workbook
                 key={key.toString()}
                 showSheetTabs={false}
+                ref={(instance) => {
+                    setWorkBookInstance(instance);
+                }}
                 column={100}
-                onOp={(op) => {
+                onOp={(ops) => {
+                    const newOps: Op[] = ops.filter((op) => op.path[3] != "ct");
+
+                    if (newOps.length == 0) {
+                        return;
+                    }
+
                     send({
-                        data: op,
+                        data: newOps,
                         spreadSheetId: "3",
                         sheetId: "1",
                     });
