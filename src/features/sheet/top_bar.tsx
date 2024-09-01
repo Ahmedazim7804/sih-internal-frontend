@@ -6,6 +6,7 @@ import ProfileComponent from "./components/profile_component";
 import { useSheetContext } from "./providers/sheet_provider";
 import { useSocket } from "./hooks/use_socket";
 import Logo from "../../components/logo";
+import SocketInfoCompononent from "./components/socket_info_compononent";
 
 export default function TopBar() {
     const { sheet, previousSheet, setSheet, updateData } = useSheetContext();
@@ -29,7 +30,8 @@ export default function TopBar() {
     return (
         <div className="w-full h-fit flex items-center">
             <Logo />
-            <button
+            <SocketInfoCompononent />
+            {/* <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 onClick={() => connect()}
             >
@@ -54,7 +56,7 @@ export default function TopBar() {
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
                 Subscribe
-            </button>
+            </button> */}
             <div className="ml-auto flex">
                 <FilePickerButton></FilePickerButton>
                 <ShareButton />
