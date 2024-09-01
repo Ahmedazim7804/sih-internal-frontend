@@ -37,12 +37,11 @@ export default function SpreadSheetAdd() {
     return (
         <div
             onClick={async () => {
-                // await mutation.mutate();
-
-                if (mutation.isSuccess) {
-                    navigate("/sheet");
-                }
-                //
+                mutation.mutateAsync().then((val) => {
+                    if (val !== null) {
+                        navigate(`/sheet/${val.sheetId}`);
+                    }
+                });
             }}
             className="flex cursor-pointer justify-center flex-row items-center bg-gray-100 py-1 rounded-full hover:bg-yellow-100 active:bg-yellow-100 mb-4"
         >
