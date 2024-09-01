@@ -1,50 +1,47 @@
-# React + TypeScript + Vite
+# SmartSheets Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the frontend repository of **SmartSheets**! SmartSheets is a collaborative web application that allows multiple users to work on spreadsheets in real-time. The frontend is built using modern web technologies to ensure a seamless and responsive user experience.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Real-time Collaboration**: Work on spreadsheets simultaneously with others, with changes reflected instantly.
+- **User-friendly Interface**: Intuitive design for easy navigation and use.
+- **Responsive Design**: Optimized for use across different devices, from desktops to mobile phones.
+- **Customizable Spreadsheets**: Format cells, apply functions, and more, just like a traditional spreadsheet application.
 
-## Expanding the ESLint configuration
+## Technology Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Framework/Libraries**: [Your chosen frontend framework/library, e.g., React]
+- **State Management**: [State management tool used, e.g., React Context]
+- **Styling**: [CSS framework or preprocessor used, e.g., Tailwind]
+- **Real-time Communication**: [WebSocket/other technologies used for real-time collaboration]
+- **Build Tools**: [Build tools used, e.g., Webpack, Vite]
 
-- Configure the top-level `parserOptions` property like this:
+## Getting Started
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Prerequisites
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- Node.js and npm installed on your machine.
+- [Any other prerequisites, e.g., specific environment variables, etc.]
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Installation
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/smartsheets-frontend.git
+   ```
+2. Navigate to the project directory: 
+   ```bash
+   cd sih-internal-frontend
+   ```
+   
+3. Install the dependencies:
+   ```bash
+   npm install
+   ```
+   
+4. Run the project:
+   ```bash
+   npm run dev
+   ```
