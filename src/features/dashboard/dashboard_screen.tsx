@@ -27,6 +27,8 @@ export default function DashboardScreen() {
         }
         else{
             setSearchData({data: data.data.filter((sheet: any) => sheet.title.toLowerCase().includes(query.toLowerCase())), success: true})
+    console.log("connection done")
+
         }   
     }
     return (

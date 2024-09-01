@@ -6,16 +6,40 @@ import { Link, useNavigate } from "react-router-dom";
 import useCollabrators from "./hooks/use_collabrators";
 import PeopleWithAccess from "./components/people_with_access";
 import { ThreeDots } from "react-loader-spinner";
+import useaddCollabrators from "./hooks/use_addCollaborators";
 
 export default function ShareScreen() {
   const navigate = useNavigate();
   const token = localStorage.getItem("sihtoken");
-
+  const [email, setemail] = React.useState("");
+  const [message, setmessage] = React.useState<{ status: "NONE" | "ERROR" | "SUCCESS", message: string }>({ status: "NONE", message: "" })
   const { isPending, error, data } = useCollabrators({
     spreadsheetId: "3",
   });
 
-  console.log(token);
+async function  addCollaborators(spreadsheetId: string, email: string) {
+    console.log(email)
+    const res = await  fetch(
+        `https://sih-internal-backend-pm7h.onrender.com/collaborators/create?SpreadSheetID=${spreadsheetId}&email=${email}`,
+        
+        {
+            method:"POST",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI1MDk4MDEyLCJleHAiOjE3MjUxODQ0MTJ9.ZfCHS3knF3zOdgrlx3YL5PEWGfA-VSGt8GWGz2mEmv0`,
+                Accept: "/",
+            },
+        }
+    )
+    const data =await res.json()
+    if(data.success){
+      setmessage({status: "SUCCESS", message: "Collaborator added successfully"})
+    }
+    else{
+      setmessage({status: "ERROR", message: data.message})
+    }
+    
+}
 
   return (
     <div
@@ -35,14 +59,20 @@ export default function ShareScreen() {
             <input
               className="outline-none border-2 border-yellow-400 h-12 px-4 py-2 rounded-tl-full rounded-bl-full w-full"
               placeholder="Enter email of the collabrator"
-              // style={{ clipPath: "inset(0 px 0 0" }}
+              type="email"
+              onChange={(e) => setemail(e.target.value)}
+            // style={{ clipPath: "inset(0 px 0 0" }}
             ></input>
-            <button className="border-2 border-yellow-400 bg-white hover:bg-yellow-200 h-12 pr-2 pl-1 rounded-tr-full rounded-br-full">
+
+            <button className="border-2 border-yellow-400 bg-white hover:bg-yellow-200 h-12 pr-2 pl-1 rounded-tr-full rounded-br-full" onClick={()=>addCollaborators("3", email)}>
               <IconContext.Provider value={{ color: "Black", size: "32px" }}>
                 <IoMdAdd />
               </IconContext.Provider>
             </button>
           </div>
+            {message.status === "NONE" && <p className="pl-3 mt-2 text-gray-800 text-sm">Add a collaborator to share the spreadsheet</p>}
+            {message.status === "ERROR" && <p className="pl-3 mt-2 text-red-500 text-sm">{message.message}</p>}
+            {message.status === "SUCCESS" && <p className="pl-3 mt-2 text-green-500 text-sm">{message.message}</p>}
           <div className="text-xl px-2 my-4">
             <p className="mb-4">People with access</p>
             {data != undefined ? (
@@ -71,6 +101,8 @@ export default function ShareScreen() {
             <button
               type="button"
               className="flex bg-yellow-200 justify-center items-center gap-1 px-4 py-2 border-stone-900 border-2 rounded-full hover:bg-yellow-400"
+              onClick={() => navigate(-1)}
+          
             >
               Done
             </button>
