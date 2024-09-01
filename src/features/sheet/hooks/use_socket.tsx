@@ -1,37 +1,53 @@
 import { useSocketContext } from "../providers/socket_context";
-import { Cell } from "@fortune-sheet/core";
+import { CellWithRowAndCol } from "@fortune-sheet/core";
 
 export function useSocket() {
     const socket = useSocketContext();
 
-    function connect() {
-        socket.connect();
+    async function connect() {
+        await socket.connect();
     }
 
     function disconnect() {
         socket.disconnect();
     }
 
-    function subscribe() {
-        socket.emit("subscribe", {
-            SpreadSheetId: "123",
-        });
+    function subscribe(spreadSheetId: string) {
+        socket.emit(
+            "SUBSCRIBE",
+            JSON.stringify({
+                SpreadSheetId: spreadSheetId,
+            })
+        );
     }
 
-    function unsubscribe(event: string) {
-        socket.off(event);
+    function listen(event: string, callback: (data: any) => void) {
+        socket.on(event, callback);
     }
 
-    function send(data: string) {
-        socket.emit("STATE", {
-            SpreadSheetId: "123",
-            data: [["Hello"]],
-        });
+    function stopListen() {
+        socket.off("STATE");
     }
 
-    function receive(callback: (data: Cell[][]) => void) {
-        socket.on("STATE", callback);
+    function send({
+        data,
+        spreadSheetId,
+        sheetId,
+    }: {
+        data: CellWithRowAndCol[];
+        spreadSheetId: string;
+        sheetId: string;
+    }) {
+        socket.emit(
+            "STATE",
+            JSON.stringify({
+                SpreadSheetId: spreadSheetId,
+                SheetId: sheetId,
+                UserId: "abc",
+                data: data,
+            })
+        );
     }
 
-    return { connect, disconnect, subscribe, unsubscribe, send, receive };
+    return { connect, disconnect, subscribe, send, listen, stopListen };
 }
