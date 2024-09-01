@@ -4,15 +4,19 @@ import { FaUser } from "react-icons/fa";
 import { FaCaretDown } from "react-icons/fa";
 import { FaCaretUp } from "react-icons/fa";
 import { IoIosLogOut } from "react-icons/io";
+import { useAuthContext } from "../../../context/auth_provider";
+import { useNavigate } from "react-router-dom";
 export default function ProfileComponent({
+
     atEnd = true,
 }: {
     atEnd?: boolean;
 }) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-
+    const navigator = useNavigate()
+  const {logout} = useAuthContext()  
     return (
-        <div className="relative inline-block text-left">
+        <div className="relative inline-block z-50 text-left">
             <div
                 onClick={() => setIsOpen((val) => !val)}
                 className={`
@@ -35,13 +39,15 @@ export default function ProfileComponent({
 
             {isOpen ? (
                 <div
-                    className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-gray-500 text-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    className="absolute flex flex-col right-0 z-50 mt-2 w-56 origin-top-right rounded-md bg-gray-500 text-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="menu-button"
                     tabIndex={-1}
                 >
-                    <div className="py-1" role="none"></div>
+
+                    <button className="py-1 px-3" role="none" onClick={()=>navigator("/dashboard")}>DashBoard</button>
+                    <button className="py-1 px-3" role="none" onClick={()=>logout()}>Logout</button>
                 </div>
             ) : (
                 <></>

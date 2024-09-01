@@ -52,13 +52,13 @@ export default function DashboardScreen() {
         <div className="flex flex-col w-lvw h-lvh font-lexend">
             <DashboardTopBar setquery={setquery} submitsearch={submitsearch} />
 
-            {/* <div className="mt-16"> */}
+            <div className="mt-16">
             <SpreadSheetList
                 isPending={isPending}
                 error={error}
                 data={searchData}
             />
-            {/* </div> */}
+            </div>
         </div>
     );
 }
