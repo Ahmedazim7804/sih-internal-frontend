@@ -4,7 +4,7 @@ import { matrixToCellMatrix, stringToMatrix } from "../utils/converter";
 import { Sheet, CellMatrix, CellWithRowAndCol } from "@fortune-sheet/core";
 
 export default function useSheet() {
-    const { sheet, setSheet, updateData } = useSheetContext();
+    const { setSheet, updateData } = useSheetContext();
 
     function loadDataFromCsv(data: string) {
         const matrix = stringToMatrix(data);

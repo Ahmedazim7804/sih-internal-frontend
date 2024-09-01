@@ -8,7 +8,7 @@ import { IconContext } from "react-icons";
 export default function FilePickerButton() {
     const { loadDataFromCsv } = useSheet();
 
-    const { openFilePicker, filesContent, loading, errors } = useFilePicker({
+    const { openFilePicker } = useFilePicker({
         accept: ".csv",
         multiple: false,
         onFilesSuccessfullySelected: (file) => {

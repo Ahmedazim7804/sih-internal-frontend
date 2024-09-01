@@ -3,9 +3,15 @@ import { IconContext } from "react-icons";
 import { IoMdAdd } from "react-icons/io";
 import { FaLink } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import useCollabrators from "./hooks/use_collabrators";
+import PeopleWithAccess from "./components/people_with_access";
 
 export default function ShareScreen() {
     const navigate = useNavigate();
+
+    const { isPending, error, data } = useCollabrators({
+        spreadsheetId: "3",
+    });
 
     return (
         <div
@@ -35,7 +41,19 @@ export default function ShareScreen() {
                     </button>
                 </div>
                 <div className="text-xl px-2 my-4">
-                    <p>People with access</p>
+                    <p className="mb-4">People with access</p>
+                    {data != undefined ? (
+                        data.data.map((element) => {
+                            return (
+                                <PeopleWithAccess
+                                    collabrator={element}
+                                    key={element.user.id}
+                                />
+                            );
+                        })
+                    ) : (
+                        <></>
+                    )}
                 </div>
 
                 <div className="flex justify-between">
