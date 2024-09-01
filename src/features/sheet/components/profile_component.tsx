@@ -1,7 +1,7 @@
 import React from "react";
 import { IconContext } from "react-icons";
 import { FaUser } from "react-icons/fa";
-export default function ProfileComponent({ atEnd = true }: { atEnd: boolean }) {
+export default function ProfileComponent( {atEnd= true}: { atEnd?:boolean }) {
     return (
         <div
             className={`

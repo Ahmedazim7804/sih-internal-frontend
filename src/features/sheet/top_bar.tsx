@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import ShareButton from "./components/share_button";
-import { useSocketContext } from "./providers/socket_context";
-import { io } from "socket.io-client";
+
 import FilePickerButton from "./components/file_picker_button";
 import ProfileComponent from "./components/profile_component";
 import { useSheetContext } from "./providers/sheet_provider";

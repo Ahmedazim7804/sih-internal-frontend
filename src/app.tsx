@@ -12,7 +12,7 @@ function App() {
                 <Route path="/share" element={<ShareScreen />}></Route>
                 <Route path="/dashboard" element={<DashboardScreen />}></Route>
             </Routes>
-            {/* <SheetComponent></SheetComponent> */}
+            <SheetComponent></SheetComponent>
         </>
     );
 }
