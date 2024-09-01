@@ -7,7 +7,7 @@ export default function AuthDialog() {
     const navigate = useNavigate();
     const [serverError, setServerError] = useState<string>("");
     const [showLogin, setShowLogin] = useState<boolean>(false);
-    console.log(localStorage.getItem("sihtoken"))
+    console.log(localStorage.getItem("sihtoken"));
     useEffect(() => {
         const token = localStorage.getItem("sihtoken");
         if (token != null && token.length > 0) {
@@ -31,7 +31,7 @@ export default function AuthDialog() {
                 .min(8, "Password should be at least 8 characters."),
         }),
         onSubmit: async (values) => {
-            console.log(values,"he");
+            console.log(values, "he");
             setServerError("");
             try {
                 const response = await fetch(
@@ -103,7 +103,7 @@ export default function AuthDialog() {
                     }
                 );
                 const data = await response.json();
-                console.log(data,"jojo")
+                console.log(data, "jojo");
                 if (response.ok) {
                     console.log("data : ", data);
                     if (data.success) {
@@ -144,7 +144,14 @@ export default function AuthDialog() {
     };
 
     return (
-        <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm z-10">
+        <div
+            onClick={(event) => {
+                if (event.target === event.currentTarget) {
+                    navigate("/");
+                }
+            }}
+            className="absolute inset-0 flex items-center justify-center backdrop-blur-sm z-10"
+        >
             <div className="bg-amber-300 shadow sm:rounded-lg w-full max-w-lg p-6 sm:p-12">
                 <div className="flex flex-col items-center">
                     <h1 className="text-2xl font-extrabold mb-6">
