@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardTopBar from "./dashboard_top_bar";
-import SpreadsheetListItem from "./components/spreadsheet_list_item";
 import SpreadSheetList from "./components/spread_sheet_list";
-import SpreadSheetHeaders from "./components/spread_sheet_headers";
-import SpreadSheetAdd from "./components/spread_sheet_add";
 import useUserSheets from "./hooks/use_usersheets";
-import { IUserSheets } from "./interfaces/user_sheets_interface";
 import { redirect } from "react-router-dom";
-import useAuth from "../auth/hooks/use_auth";
+import { IUserSheets } from "../../types";
+import useAuth from "../../hooks/use_auth";
 
 export default function DashboardScreen() {
     const { data, isPending, error } = useUserSheets();

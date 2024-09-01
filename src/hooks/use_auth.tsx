@@ -1,5 +1,4 @@
-import { IUser } from "../interfaces/user_interface";
-import { useAuthContext } from "../providers/auth_provider";
+import { useAuthContext } from "../context/auth_provider";
 import { jwtDecode } from "jwt-decode";
 export default function useAuth() {
     const { user, setUser } = useAuthContext();

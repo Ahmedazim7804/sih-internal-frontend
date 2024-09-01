@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { IUserSheets } from "../interfaces/user_sheets_interface";
-import useAuth from "../../auth/hooks/use_auth";
-import { useAuthContext } from "../../auth/providers/auth_provider";
+import { IUserSheets } from "../../../types" 
+import { useAuthContext } from "../../../context/auth_provider";
 
 function getUserSheet(token: string) {
     console.log(token);

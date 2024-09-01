@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useSheetContext } from "../providers/sheet_provider";
+import { useSheetContext } from "../../../context/sheet_provider";
 import { matrixToCellMatrix, stringToMatrix } from "../utils/converter";
 import { Sheet, CellMatrix, CellWithRowAndCol } from "@fortune-sheet/core";
 

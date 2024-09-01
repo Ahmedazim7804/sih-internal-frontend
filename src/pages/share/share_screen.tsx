@@ -3,10 +3,10 @@ import { IconContext } from "react-icons";
 import { IoMdAdd } from "react-icons/io";
 import { FaLink } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import useCollabrators from "./hooks/use_collabrators";
+import useCollabrators from "../../hooks/use_collabrators";
 import PeopleWithAccess from "./components/people_with_access";
 import { ThreeDots } from "react-loader-spinner";
-import useaddCollabrators from "./hooks/use_addCollaborators";
+import useaddCollabrators from "../../hooks/use_addCollaborators";
 
 export default function ShareScreen() {
   const navigate = useNavigate();
@@ -15,6 +15,7 @@ export default function ShareScreen() {
   const [message, setmessage] = React.useState<{ status: "NONE" | "ERROR" | "SUCCESS", message: string }>({ status: "NONE", message: "" })
   const { isPending, error, data } = useCollabrators({
     spreadsheetId: "3",
+    token: token!,
   });
 
 async function  addCollaborators(spreadsheetId: string, email: string) {

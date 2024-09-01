@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import useAuth from "./hooks/use_auth";
+import useAuth from "../../hooks/use_auth";
 import { ThreeDots } from "react-loader-spinner";
 
 export default function AuthDialog() {

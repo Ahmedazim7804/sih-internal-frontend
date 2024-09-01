@@ -1,11 +1,11 @@
 import { Route, Routes, useNavigate, redirect } from "react-router-dom";
-import SheetComponent from "./features/sheet/sheet";
-import AuthScreen from "./features/auth/auth_screen";
-import ShareScreen from "./features/share/share_screen";
-import DashboardScreen from "./features/dashboard/dashboard_screen";
-import { useAuthContext } from "./features/auth/providers/auth_provider";
+import SheetComponent from "./pages/sheet/sheet";
+import AuthScreen from "./pages/auth/auth_screen";
+import ShareScreen from "./pages/share/share_screen";
+import DashboardScreen from "./pages/dashboard/dashboard_screen";
+import { useAuthContext } from "./context/auth_provider";
 import { useEffect, useState } from "react";
-import useAuth from "./features/auth/hooks/use_auth";
+import useAuth from "./hooks/use_auth";
 import { ThreeDots } from "react-loader-spinner";
 
 function App() {

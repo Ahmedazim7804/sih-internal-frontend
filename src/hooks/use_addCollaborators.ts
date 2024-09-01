@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { ICollabrators } from "../interfaces/collabrator_interface";
-import { useAuthContext } from "../../auth/providers/auth_provider";
+import { ICollabrators } from "../types" 
+import { useAuthContext } from "../context/auth_provider";
 
 async function addCollaborators({
     spreadsheetId,
