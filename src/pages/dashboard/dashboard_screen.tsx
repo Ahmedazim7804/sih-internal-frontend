@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import DashboardTopBar from "./dashboard_top_bar";
 import SpreadSheetList from "./components/spread_sheet_list";
-import useUserSheets from "./hooks/use_usersheets";
+import useUserSheets from "../../hooks/use_usersheets";
 import { redirect } from "react-router-dom";
 import { IUserSheets } from "../../types";
 import useAuth from "../../hooks/use_auth";
