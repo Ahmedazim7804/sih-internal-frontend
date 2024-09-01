@@ -18,10 +18,12 @@ createRoot(document.getElementById("root")!).render(
             <SheetProvider>
                 <></>
                 <BrowserRouter>
-                    <App></App>
-                    {/* <Routes>
+                    <AuthProvider>
+                        <App></App>
+                        {/* <Routes>
                 <Route path="/*" element={<App></App>}></Route>
             </Routes> */}
+                    </AuthProvider>
                 </BrowserRouter>
             </SheetProvider>
         </QueryClientProvider>

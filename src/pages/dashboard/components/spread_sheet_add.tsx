@@ -8,11 +8,7 @@ import useSheet from "../../../hooks/use_sheet";
 import { useQuery } from "@tanstack/react-query";
 
 export default function SpreadSheetAdd() {
-    // const { isLoading, isError, data} = useQuery(
-    //     {
-
-    //     }
-    // );
+    // const { isLoading, isError, data } = useQuery({});
 
     return (
         <div className="flex cursor-pointer justify-center flex-row items-center bg-gray-100 py-1 rounded-full hover:bg-yellow-100 active:bg-yellow-100 mb-4">
