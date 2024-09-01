@@ -8,23 +8,23 @@ import { useSocket } from "./hooks/use_socket";
 import Logo from "../../components/logo";
 
 export default function TopBar() {
-    const { sheet, setSheet, updateData } = useSheetContext();
+    const { sheet, previousSheet, setSheet, updateData } = useSheetContext();
     const { connect, disconnect, listen, send, subscribe, stopListen } =
         useSocket();
 
-    useEffect(() => {
-        listen("STATE", (data) => {
-            console.log(data.data);
+    // useEffect(() => {
+    //     listen("STATE", (data) => {
+    //         console.log(data.data);
 
-            setSheet(data.data);
-            updateData();
-        });
+    //         setSheet(data.data);
+    //         updateData();
+    //     });
 
-        return () => {
-            stopListen();
-            disconnect();
-        };
-    });
+    //     return () => {
+    //         stopListen();
+    //         disconnect();
+    //     };
+    // });
 
     return (
         <div className="w-full h-fit flex items-center">
@@ -37,11 +37,13 @@ export default function TopBar() {
             </button>
             <button
                 onClick={async () =>
-                    send({
-                        data: sheet,
-                        spreadSheetId: "ABC",
-                        sheetId: "123",
-                    })
+                    // send({
+                    //     data: sheet,
+                    //     spreadSheetId: "ABC",
+                    //     previousData: previousSheet,
+                    //     sheetId: "123",
+                    // })
+                    console.log("S")
                 }
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
@@ -56,7 +58,7 @@ export default function TopBar() {
             <div className="ml-auto flex">
                 <FilePickerButton></FilePickerButton>
                 <ShareButton />
-                <ProfileComponent />
+                <ProfileComponent atEnd={true} />
             </div>
         </div>
     );

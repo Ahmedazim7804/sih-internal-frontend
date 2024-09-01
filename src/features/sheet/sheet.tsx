@@ -5,10 +5,31 @@ import TopBar from "./top_bar";
 import { useNavigate } from "react-router-dom";
 import { useSheetContext } from "./providers/sheet_provider";
 import useSheet from "./hooks/use_sheet";
+import { useSocket } from "./hooks/use_socket";
+import { Op } from "@fortune-sheet/core";
 
 export default function Sheet() {
-    const { sheet, key } = useSheetContext();
+    const { sheet, key, executeOperation } = useSheetContext();
+    const { connect, disconnect, listen, send, subscribe, stopListen } =
+        useSocket();
 
+    useEffect(() => {
+        connect().then(() => {
+            subscribe("3");
+
+            listen("STATE", ({ data }: { data: Op[] }) => {
+                console.log(data);
+                data.forEach((operation) => {
+                    executeOperation(operation);
+                });
+            });
+        });
+
+        return () => {
+            stopListen();
+            disconnect();
+        };
+    }, [disconnect, listen, stopListen, connect, subscribe, executeOperation]);
     const { syncData } = useSheet();
 
     return (
@@ -17,6 +38,14 @@ export default function Sheet() {
             <Workbook
                 key={key.toString()}
                 showSheetTabs={false}
+                column={100}
+                onOp={(op) => {
+                    send({
+                        data: op,
+                        spreadSheetId: "3",
+                        sheetId: "1",
+                    });
+                }}
                 onChange={(data) => syncData(data)}
                 data={[
                     {

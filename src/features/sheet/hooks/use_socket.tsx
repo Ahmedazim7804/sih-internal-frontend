@@ -1,5 +1,6 @@
 import { useSocketContext } from "../providers/socket_context";
-import { CellWithRowAndCol } from "@fortune-sheet/core";
+import { CellWithRowAndCol, Op } from "@fortune-sheet/core";
+import { getCellMatrixesDifference } from "../utils/cellmatrix_diffrence";
 
 export function useSocket() {
     const socket = useSocketContext();
@@ -29,21 +30,21 @@ export function useSocket() {
         socket.off("STATE");
     }
 
-    function send({
+    async function send({
         data,
         spreadSheetId,
         sheetId,
     }: {
-        data: CellWithRowAndCol[];
+        data: Op[];
         spreadSheetId: string;
         sheetId: string;
     }) {
-        socket.emit(
+        await socket.emit(
             "STATE",
             JSON.stringify({
                 SpreadSheetId: spreadSheetId,
                 SheetId: sheetId,
-                UserId: "abc",
+                UserId: "1",
                 data: data,
             })
         );
