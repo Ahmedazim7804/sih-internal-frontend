@@ -7,9 +7,9 @@ export default function AuthDialog() {
     const navigate = useNavigate();
     const [serverError, setServerError] = useState<string>("");
     const [showLogin, setShowLogin] = useState<boolean>(false);
-
+    console.log(localStorage.getItem("sihtoken"))
     useEffect(() => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("sihtoken");
         if (token != null && token.length > 0) {
             navigate("/");
         }
@@ -31,7 +31,7 @@ export default function AuthDialog() {
                 .min(8, "Password should be at least 8 characters."),
         }),
         onSubmit: async (values) => {
-            console.log(values);
+            console.log(values,"he");
             setServerError("");
             try {
                 const response = await fetch(
@@ -50,7 +50,7 @@ export default function AuthDialog() {
                 if (response.ok) {
                     console.log("data : ", data);
                     if (data.success) {
-                        localStorage.setItem("token", data.token);
+                        localStorage.setItem("sihtoken", data.token);
                         showSnackbar();
                         navigate("/");
                     } else {
@@ -103,10 +103,11 @@ export default function AuthDialog() {
                     }
                 );
                 const data = await response.json();
+                console.log(data,"jojo")
                 if (response.ok) {
                     console.log("data : ", data);
                     if (data.success) {
-                        localStorage.setItem("token", data.token);
+                        localStorage.setItem("sihtoken", data.token);
                         showSnackbar();
                         navigate("/");
                     } else {
