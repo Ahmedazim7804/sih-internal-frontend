@@ -2,12 +2,15 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import useAuth from "./hooks/use_auth";
 
 export default function AuthDialog() {
     const navigate = useNavigate();
     const [serverError, setServerError] = useState<string>("");
     const [showLogin, setShowLogin] = useState<boolean>(false);
-    console.log(localStorage.getItem("sihtoken"));
+
+    const { signIn, signUp } = useAuth();
+
     useEffect(() => {
         const token = localStorage.getItem("sihtoken");
         if (token != null && token.length > 0) {
@@ -31,45 +34,17 @@ export default function AuthDialog() {
                 .min(8, "Password should be at least 8 characters."),
         }),
         onSubmit: async (values) => {
-            console.log(values, "he");
             setServerError("");
-            try {
-                const response = await fetch(
-                    "https://sih-internal-backend-pm7h.onrender.com/auth/signup",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            name: values.name,
-                            password: values.password,
-                            email: values.email,
-                        }),
-                    }
-                );
-                const data = await response.json();
-                if (response.ok) {
-                    console.log("data : ", data);
-                    if (data.success) {
-                        localStorage.setItem("sihtoken", data.token);
-                        showSnackbar();
-                        navigate("/");
-                    } else {
-                        setServerError(
-                            data.message ||
-                                "There is some problem in creating your account."
-                        );
-                    }
-                } else {
-                    setServerError(
-                        data.message ||
-                            "There is some problem in creating your account."
-                    );
-                }
-            } catch (error) {
-                console.error(error);
-                setServerError(
-                    "There is some problem in creating your account."
-                );
+
+            const error = await signUp({
+                values: values,
+            });
+
+            if (error == null) {
+                showSnackbar();
+                navigate("/");
+            } else {
+                setServerError(error);
             }
         },
     });
@@ -88,42 +63,15 @@ export default function AuthDialog() {
                 .min(8, "Password should be at least 8 characters."),
         }),
         onSubmit: async (values) => {
-            console.log(values);
             setServerError("");
-            try {
-                const response = await fetch(
-                    "https://sih-internal-backend-pm7h.onrender.com/auth/login",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            password: values.password,
-                            email: values.email,
-                        }),
-                    }
-                );
-                const data = await response.json();
-                console.log(data, "jojo");
-                if (response.ok) {
-                    console.log("data : ", data);
-                    if (data.success) {
-                        localStorage.setItem("sihtoken", data.token);
-                        showSnackbar();
-                        navigate("/");
-                    } else {
-                        setServerError(
-                            data.message ||
-                                "There is some problem in logging in."
-                        );
-                    }
-                } else {
-                    setServerError(
-                        data.message || "There is some problem in logging in."
-                    );
-                }
-            } catch (error) {
-                console.error(error);
-                setServerError("There is some problem in logging in.");
+
+            const error = await signIn({ values: values });
+
+            if (error == null) {
+                showSnackbar();
+                navigate("/");
+            } else {
+                setServerError(error);
             }
         },
     });
