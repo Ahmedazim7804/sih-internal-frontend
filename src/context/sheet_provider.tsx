@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { CellWithRowAndCol, Op, Cell } from "@fortune-sheet/core";
+import { CellWithRowAndCol, Op, Cell, Sheet } from "@fortune-sheet/core";
 import { WorkbookInstance } from "@fortune-sheet/react";
 
 interface ISheetContext {
@@ -43,7 +43,19 @@ export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
     }
 
     function setSheet(data: Array<CellWithRowAndCol>) {
-        sheet.current = data;
+        const currentSheet = wbInstance.current?.getSheet();
+
+        if (currentSheet == undefined) {
+            return;
+        }
+
+        wbInstance.current?.updateSheet([
+            {
+                name: "Sheet 1",
+                id: "1",
+                celldata: data,
+            },
+        ]);
     }
 
     function setWorkBookInstance(instance: WorkbookInstance | null) {

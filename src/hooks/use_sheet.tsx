@@ -1,18 +1,22 @@
 import { useContext } from "react";
-import { useSheetContext } from "../../../context/sheet_provider";
-import { matrixToCellMatrix, stringToMatrix } from "../utils/converter";
 import { Sheet, CellMatrix, CellWithRowAndCol } from "@fortune-sheet/core";
+import { useSheetContext } from "../context/sheet_provider";
+import {
+    matrixToCellMatrix,
+    stringToMatrix,
+} from "../pages/sheet/utils/converter";
 
 export default function useSheet() {
-    const { setSheet, updateData } = useSheetContext();
+    const { setSheet, wbInstance } = useSheetContext();
 
     function loadDataFromCsv(data: string) {
         const matrix = stringToMatrix(data);
         const cellMatrix = matrixToCellMatrix(matrix);
 
-        saveToLocalStorage(cellMatrix);
         setSheet(cellMatrix);
-        updateData();
+
+        // saveToLocalStorage(cellMatrix);
+        // setSheet(cellMatrix);
     }
 
     async function saveToLocalStorage(data: CellWithRowAndCol[]) {
@@ -39,9 +43,9 @@ export default function useSheet() {
             }
         }
 
-        setSheet(cellWithRowAndCol);
+        // setSheet(cellWithRowAndCol);
 
-        saveToLocalStorage(cellWithRowAndCol);
+        // saveToLocalStorage(cellWithRowAndCol);
     }
 
     return { loadDataFromCsv, syncData };

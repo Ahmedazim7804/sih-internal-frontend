@@ -1,9 +1,8 @@
 import React from "react";
-import { FaShareAlt } from "react-icons/fa";
 import { MdFileOpen } from "react-icons/md";
 import { useFilePicker } from "use-file-picker";
-import useSheet from "../hooks/use_sheet";
 import { IconContext } from "react-icons";
+import useSheet from "../../../hooks/use_sheet";
 
 export default function FilePickerButton() {
     const { loadDataFromCsv } = useSheet();

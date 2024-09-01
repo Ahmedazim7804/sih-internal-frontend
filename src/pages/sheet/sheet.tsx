@@ -3,16 +3,17 @@ import "@fortune-sheet/react/dist/index.css";
 import { Workbook } from "@fortune-sheet/react";
 import TopBar from "./top_bar";
 import { useSheetContext } from "../../context/sheet_provider";
-import useSheet from "./hooks/use_sheet";
 
 import { Op } from "@fortune-sheet/core";
 import { useSocket } from "../../hooks/use_socket";
+import useSheet from "../../hooks/use_sheet";
 
 export default function Sheet() {
     const { sheet, key, executeOperation, setWorkBookInstance } =
         useSheetContext();
     const { connect, disconnect, listen, send, subscribe, stopListen } =
         useSocket();
+    const { syncData } = useSheet();
 
     useEffect(() => {
         connect().then(() => {
@@ -30,7 +31,6 @@ export default function Sheet() {
             disconnect();
         };
     }, []);
-    const { syncData } = useSheet();
 
     return (
         <div className="w-full h-full z-0 flex flex-col font-lexend">
@@ -60,6 +60,7 @@ export default function Sheet() {
                     {
                         name: "Sheet 1",
                         hide: 0,
+                        id: "1",
                         celldata: sheet,
                     },
                 ]}
