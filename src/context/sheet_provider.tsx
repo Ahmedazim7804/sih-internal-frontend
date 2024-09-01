@@ -1,61 +1,67 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { CellWithRowAndCol, Op, Cell, Sheet } from "@fortune-sheet/core";
 import { WorkbookInstance } from "@fortune-sheet/react";
+import { useSocket } from "../hooks/use_socket";
 
 interface ISheetContext {
     sheet: Array<CellWithRowAndCol>;
-    setSheet: (data: Array<CellWithRowAndCol>) => void;
+    setSheet: (data: Array<CellWithRowAndCol>, emit: boolean) => void;
     setWorkBookInstance: (data: WorkbookInstance | null) => void;
-    updateData: () => void;
     wbInstance: WorkbookInstance | null;
     executeOperation: (operation: Op) => void;
-    key: number;
 }
 
 export const SheetContext = createContext<ISheetContext>({
     sheet: [],
-    key: 0,
-    setSheet: (data) => {},
+    setSheet: (data, emit) => {},
     setWorkBookInstance: (data) => {},
     wbInstance: null,
-    updateData: () => {},
     executeOperation: (operation) => {},
 });
 
 export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
     const sheet = useRef<Array<CellWithRowAndCol>>([]);
-
     const wbInstance = useRef<WorkbookInstance | null>(null);
 
-    const [key, updateKey] = useState(0);
+    const { send } = useSocket();
 
-    useEffect(() => {
-        const savedSheet = localStorage.getItem("sheet");
+    // useEffect(() => {
+    //     const savedSheet = localStorage.getItem("sheet");
 
-        if (savedSheet != null) {
-            sheet.current = JSON.parse(savedSheet);
-            updateData();
-        }
-    }, []);
+    //     if (savedSheet != null) {
+    //         sheet.current = JSON.parse(savedSheet);
+    //         updateData();
+    //     }
+    // }, []);
 
-    function updateData() {
-        updateKey(key + 1);
-    }
-
-    function setSheet(data: Array<CellWithRowAndCol>) {
+    function setSheet(data: Array<CellWithRowAndCol>, emit: boolean = false) {
         const currentSheet = wbInstance.current?.getSheet();
 
         if (currentSheet == undefined) {
             return;
         }
 
+        console.log(data);
+
         wbInstance.current?.updateSheet([
             {
                 name: "Sheet 1",
-                id: "1",
+                id: currentSheet.id!,
                 celldata: data,
             },
         ]);
+
+        if (emit) {
+            send({
+                data: {
+                    isOps: false,
+                    data: data,
+                },
+                isForBackend: true,
+                isOps: false,
+                spreadSheetId: currentSheet.id!,
+            });
+        }
     }
 
     function setWorkBookInstance(instance: WorkbookInstance | null) {
@@ -91,10 +97,6 @@ export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
                     attr,
                     operation.value
                 );
-
-                // wbInstance.current?.setCellFormat(row, column, )
-
-                // wbInstance.current?.setCellValue(row, column, operation.value);
                 break;
             case "addSheet":
                 break;
@@ -109,6 +111,8 @@ export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
 
                 break;
             case "replace":
+                console.log(operation);
+
                 wbInstance.current?.setCellValue(row, column, operation.value);
 
                 break;
@@ -124,9 +128,7 @@ export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
                 wbInstance: wbInstance.current,
                 setWorkBookInstance,
                 executeOperation,
-                key,
                 setSheet,
-                updateData,
             }}
         >
             {children}

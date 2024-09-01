@@ -16,7 +16,7 @@ export default function useSheet() {
         const matrix = stringToMatrix(data);
         const cellMatrix = matrixToCellMatrix(matrix);
 
-        setSheet(cellMatrix);
+        setSheet(cellMatrix, true);
 
         // saveToLocalStorage(cellMatrix);
         // setSheet(cellMatrix);

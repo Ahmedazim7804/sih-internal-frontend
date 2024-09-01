@@ -8,31 +8,74 @@ import { Op } from "@fortune-sheet/core";
 import { useSocket } from "../../hooks/use_socket";
 import useSheet from "../../hooks/use_sheet";
 import { useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { ThreeDots } from "react-loader-spinner";
+import { useGetToken } from "../../hooks/auth/useGetToken";
+import { useAuthContext } from "../../context/auth_provider";
+import { ISocketRecieveData } from "../../types";
+
+function getSpreadSheetFromBackend(token: string, sheetId: string) {
+    return fetch(
+        `https://sih-internal-backend-pm7h.onrender.com/sheet/state?SheetId=${sheetId}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-type": "application/json",
+            },
+        }
+    ).then((res) => res.json());
+}
 
 export default function Sheet() {
     const navigation = useNavigate();
 
     const params = useParams();
 
+    const { user } = useAuthContext();
+
+    const token = useGetToken();
+
     useEffect(() => {
-        if (localStorage.getItem("token") == null) {
+        if (localStorage.getItem("token") === null) {
             navigation("/");
         }
     }, [navigation]);
-    const { sheet, key, executeOperation, setWorkBookInstance } =
+    const { sheet, executeOperation, setWorkBookInstance, setSheet } =
         useSheetContext();
     const { connect, disconnect, listen, send, subscribe, stopListen } =
         useSocket();
     const { syncData } = useSheet();
 
+    if (params.id == null || params.id == undefined) {
+        navigation("/");
+    }
+    const sheetId = params.id;
+
+    const userSheets = localStorage.getItem("userSheets");
+
+    if (userSheets === null || !userSheets.includes(sheetId!)) {
+        navigation("/");
+    }
+
+    const { isPending, data, error } = useQuery({
+        queryKey: [`spreadSheetData${sheetId}`],
+        queryFn: () => getSpreadSheetFromBackend(token!, sheetId!),
+    });
+
+    console.log(data);
+
     useEffect(() => {
         connect().then(() => {
-            subscribe("3");
+            subscribe(sheetId!);
 
-            listen("STATE", ({ data }: { data: Op[] }) => {
-                data.forEach((operation) => {
-                    executeOperation(operation);
-                });
+            listen("STATE", ({ data }: { data: ISocketRecieveData }) => {
+                if (data.isOps) {
+                    data.data.forEach((operation: Op) => {
+                        executeOperation(operation);
+                    });
+                } else {
+                    setSheet(data.data, false);
+                }
             });
         });
 
@@ -42,38 +85,39 @@ export default function Sheet() {
         };
     }, []);
 
-    if (params.id == null || params.id == undefined) {
-        navigation("/");
-    }
-    const sheetId = params.id;
-
-    const userSheets = localStorage.getItem("userSeets");
-
-    if (userSheets === null || !userSheets.includes(sheetId!)) {
-        navigation("/");
-    }
-
     return (
         <div className="w-full h-full z-0 flex flex-col font-lexend">
+            {isPending ? (
+                <div className="absolute w-full h-full flex items-center justify-center z-10 backdrop-blur-sm">
+                    <ThreeDots color="#facc15" />
+                </div>
+            ) : (
+                <></>
+            )}
             <TopBar></TopBar>
             <Workbook
-                key={key.toString()}
                 showSheetTabs={false}
                 ref={(instance) => {
                     setWorkBookInstance(instance);
                 }}
                 column={100}
                 onOp={(ops) => {
-                    const newOps: Op[] = ops.filter((op) => op.path[3] != "ct");
+                    const newOps: Op[] = ops.filter(
+                        (op) => op.path[3] !== "ct"
+                    );
 
                     if (newOps.length == 0) {
                         return;
                     }
 
                     send({
-                        data: newOps,
+                        data: {
+                            isOps: true,
+                            data: newOps,
+                        },
+                        isForBackend: false,
+                        isOps: true,
                         spreadSheetId: sheetId!,
-                        sheetId: "1",
                     });
                 }}
                 onChange={(data) => syncData(data)}
@@ -81,8 +125,8 @@ export default function Sheet() {
                     {
                         name: "Sheet 1",
                         hide: 0,
-                        id: "1",
-                        celldata: sheet,
+                        id: sheetId!,
+                        celldata: error !== null ? [] : [],
                     },
                 ]}
                 toolbarItems={[

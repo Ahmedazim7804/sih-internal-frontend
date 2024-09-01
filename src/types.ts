@@ -1,6 +1,4 @@
-
 export interface IUser {
-
     name: string;
     email: string;
     userId: string;
@@ -38,17 +36,20 @@ export interface ICollabrator {
     };
 }
 
-
 export interface ISheetAction {
     type: string;
     payload: any;
 }
 
 export type UserType = {
-    id : number
+    id: number;
 
-    name :string
-    email: string
-    password : string
+    name: string;
+    email: string;
+    password: string;
+};
 
+export interface ISocketRecieveData {
+    isOps: boolean;
+    data: any;
 }
