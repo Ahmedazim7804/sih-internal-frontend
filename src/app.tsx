@@ -9,9 +9,9 @@ function App() {
         <>
             <Routes>
                 <Route path="/auth" element={<AuthScreen></AuthScreen>} />
-                <Route path="/" element={<SheetComponent/>} />
+                <Route path="/sheet/:id" element={<SheetComponent />} />
                 <Route path="/share" element={<ShareScreen />}></Route>
-                <Route path="/dashboard" element={<DashboardScreen />}></Route>
+                <Route path="/" element={<DashboardScreen />}></Route>
             </Routes>
             {/* <SheetComponent/> */}
         </>

@@ -3,7 +3,7 @@ import React from "react";
 export default function Logo() {
     return (
         <img
-            src="./img/logo.PNG"
+            src="/img/logo.png"
             alt="logo"
             style={{
                 width: "185px",

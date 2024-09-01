@@ -7,16 +7,16 @@ import { useSheetContext } from "../../context/sheet_provider";
 import { Op } from "@fortune-sheet/core";
 import { useSocket } from "../../hooks/use_socket";
 import useSheet from "../../hooks/use_sheet";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Sheet() {
-    const navigation= useNavigate();
+    const navigation = useNavigate();
+
+    const params = useParams();
+
     useEffect(() => {
-        if (!localStorage.getItem("token")) {
+        if (localStorage.getItem("token") == null) {
             navigation("/");
-        }
-        else{
-            navigation("/dashboard");
         }
     }, [navigation]);
     const { sheet, key, executeOperation, setWorkBookInstance } =
@@ -42,6 +42,17 @@ export default function Sheet() {
         };
     }, []);
 
+    if (params.id == null || params.id == undefined) {
+        navigation("/");
+    }
+    const sheetId = params.id;
+
+    const userSheets = localStorage.getItem("userSeets");
+
+    if (userSheets === null || !userSheets.includes(sheetId!)) {
+        navigation("/");
+    }
+
     return (
         <div className="w-full h-full z-0 flex flex-col font-lexend">
             <TopBar></TopBar>
@@ -61,7 +72,7 @@ export default function Sheet() {
 
                     send({
                         data: newOps,
-                        spreadSheetId: "3",
+                        spreadSheetId: sheetId!,
                         sheetId: "1",
                     });
                 }}

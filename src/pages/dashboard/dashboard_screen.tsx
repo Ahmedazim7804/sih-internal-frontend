@@ -9,24 +9,23 @@ import { useAuthContext } from "../../context/auth_provider";
 
 export default function DashboardScreen() {
     const { data, isPending, error } = useUserSheets();
-    const redirect= useNavigate()
+    const redirect = useNavigate();
     const [query, setquery] = useState<string>("");
     const [searchData, setSearchData] = useState<IUserSheets>({
         data: [],
         success: false,
     });
-    const { user} = useAuthContext();
+    const { user } = useAuthContext();
 
     useEffect(() => {
         if (!localStorage.getItem("token")) {
-
             redirect("/");
         }
     }, [user]);
 
     useEffect(() => {
         if (data) {
-            console.log(data)
+            console.log(data);
             setSearchData(data);
         }
     }, [data]);
@@ -52,12 +51,12 @@ export default function DashboardScreen() {
         <div className="flex flex-col w-lvw h-lvh font-lexend">
             <DashboardTopBar setquery={setquery} submitsearch={submitsearch} />
 
-            <div className="mt-16">
-            <SpreadSheetList
-                isPending={isPending}
-                error={error}
-                data={searchData}
-            />
+            <div className="mt-2">
+                <SpreadSheetList
+                    isPending={isPending}
+                    error={error}
+                    data={searchData}
+                />
             </div>
         </div>
     );

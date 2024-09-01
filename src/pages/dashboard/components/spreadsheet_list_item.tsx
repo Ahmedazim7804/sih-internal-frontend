@@ -3,15 +3,21 @@ import { IconContext } from "react-icons";
 import { TbFileSpreadsheet } from "react-icons/tb";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import { BsFileEarmarkSpreadsheetFill } from "react-icons/bs";
-import { IUserSheet } from "../interfaces/user_sheets_interface";
+import { useNavigate } from "react-router-dom";
+import { IUserSheet } from "../../../types";
 
 export default function SpreadsheetListItem({
     spreadSheet,
 }: {
     spreadSheet: IUserSheet;
 }) {
+    const navigate = useNavigate();
+
     return (
-        <div className="flex cursor-pointer flex-row items-center bg-gray-100 rounded-full py-4 px-4 hover:bg-yellow-100 active:bg-yellow-100 mb-4">
+        <div
+            onClick={() => navigate(`/sheet/${spreadSheet.id}`)}
+            className="flex cursor-pointer flex-row items-center bg-gray-100 rounded-full py-4 px-4 hover:bg-yellow-100 active:bg-yellow-100 mb-4"
+        >
             <IconContext.Provider
                 value={{
                     size: "24px",

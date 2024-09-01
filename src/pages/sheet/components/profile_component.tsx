@@ -7,14 +7,13 @@ import { IoIosLogOut } from "react-icons/io";
 import { useAuthContext } from "../../../context/auth_provider";
 import { useNavigate } from "react-router-dom";
 export default function ProfileComponent({
-
     atEnd = true,
 }: {
     atEnd?: boolean;
 }) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const navigator = useNavigate()
-  const {logout} = useAuthContext()  
+    const navigator = useNavigate();
+    const { logout } = useAuthContext();
     return (
         <div className="relative inline-block z-50 text-left">
             <div
@@ -45,9 +44,20 @@ export default function ProfileComponent({
                     aria-labelledby="menu-button"
                     tabIndex={-1}
                 >
-
-                    <button className="py-1 px-3" role="none" onClick={()=>navigator("/dashboard")}>DashBoard</button>
-                    <button className="py-1 px-3" role="none" onClick={()=>logout()}>Logout</button>
+                    <button
+                        className="py-1 px-3"
+                        role="none"
+                        onClick={() => navigator("/")}
+                    >
+                        DashBoard
+                    </button>
+                    <button
+                        className="py-1 px-3"
+                        role="none"
+                        onClick={() => logout()}
+                    >
+                        Logout
+                    </button>
                 </div>
             ) : (
                 <></>

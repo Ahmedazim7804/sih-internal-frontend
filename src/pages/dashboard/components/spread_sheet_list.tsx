@@ -27,9 +27,13 @@ export default function SpreadSheetList({
         return <p>Some Error Occured</p>;
     }
 
+    localStorage.setItem(
+        "userSheets",
+        JSON.stringify(data.data.map((e) => e.id.toString()))
+    );
+
     return (
         <div className="mt-16 mx-auto w-[750px] sm:w-[75%] md:w-[70%] lg:w-[65%] xl:w-[55%] 2xl:w-[55%]">
-            
             <SpreadSheetHeaders />
             {data &&
                 data.data.map((sheet) => (
