@@ -1,6 +1,6 @@
-import { useEffect, } from "react";
+import { useEffect } from "react";
 import "@fortune-sheet/react/dist/index.css";
-import { Workbook} from "@fortune-sheet/react";
+import { Workbook } from "@fortune-sheet/react";
 import TopBar from "./top_bar";
 import { useSheetContext } from "../../context/sheet_provider";
 import useSheet from "./hooks/use_sheet";
@@ -19,8 +19,6 @@ export default function Sheet() {
             subscribe("3");
 
             listen("STATE", ({ data }: { data: Op[] }) => {
-                console.log(data);
-
                 data.forEach((operation) => {
                     executeOperation(operation);
                 });
@@ -31,7 +29,7 @@ export default function Sheet() {
             stopListen();
             disconnect();
         };
-    }, [disconnect, listen, stopListen, connect, subscribe, executeOperation]);
+    }, []);
     const { syncData } = useSheet();
 
     return (

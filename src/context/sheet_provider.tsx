@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { CellWithRowAndCol, Op } from "@fortune-sheet/core";
+import { CellWithRowAndCol, Op, Cell } from "@fortune-sheet/core";
 import { WorkbookInstance } from "@fortune-sheet/react";
 
 interface ISheetContext {
@@ -56,6 +56,7 @@ export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
     function executeOperation(operation: Op) {
         const row = operation.path[1] as number | null | undefined;
         const column = operation.path[2] as number | null | undefined;
+        const attr = operation.path[3] as keyof Cell | null | undefined;
 
         if (
             row == null ||
@@ -68,7 +69,20 @@ export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
 
         switch (operation.op) {
             case "add":
-                wbInstance.current?.setCellValue(row, column, operation.value);
+                if (attr == null || attr == undefined) {
+                    break;
+                }
+
+                wbInstance.current?.setCellFormat(
+                    row,
+                    column,
+                    attr,
+                    operation.value
+                );
+
+                // wbInstance.current?.setCellFormat(row, column, )
+
+                // wbInstance.current?.setCellValue(row, column, operation.value);
                 break;
             case "addSheet":
                 break;
