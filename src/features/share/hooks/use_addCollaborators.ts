@@ -1,36 +1,47 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { ICollabrators } from "../interfaces/collabrator_interface";
+import { useAuthContext } from "../../auth/providers/auth_provider";
 
-async function  addCollaborators(spreadsheetId: string, email: string) {
-    console.log(email)
-    const res = await  fetch(
+async function addCollaborators({
+    spreadsheetId,
+    token,
+    email,
+}: {
+    spreadsheetId: string;
+    token: string;
+    email: string;
+}) {
+    const res = await fetch(
         `https://sih-internal-backend-pm7h.onrender.com/spreadsheet/collaborators/create?SpreadSheetId=${spreadsheetId}&email=${email}`,
-        
+
         {
-            method:"POST",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI1MDk4MDEyLCJleHAiOjE3MjUxODQ0MTJ9.ZfCHS3knF3zOdgrlx3YL5PEWGfA-VSGt8GWGz2mEmv0`,
+                Authorization: `Bearer ${token}`,
                 Accept: "/",
             },
         }
-    )
-    const data =await res.json()
-    console.log(data)
-    return data
+    );
+    const data = await res.json();
+    return data;
 }
 
-export default function useaddCollabrators({
+export default function useAddCollabrators({
     spreadsheetId,
-    email
 }: {
     spreadsheetId: string;
-    email: string
 }) {
+    const { user } = useAuthContext();
+
     const { isPending, error, data } = useQuery<ICollabrators>({
         queryKey: ["collabrators"],
-        queryFn: () =>addCollaborators(spreadsheetId,email),
+        queryFn: () =>
+            addCollaborators({
+                spreadsheetId: spreadsheetId,
+                email: user!.email,
+                token: user!.token!,
+            }),
     });
 
     return {

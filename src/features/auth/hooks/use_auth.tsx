@@ -1,10 +1,34 @@
 import { IUser } from "../interfaces/user_interface";
 import { useAuthContext } from "../providers/auth_provider";
-
+import { jwtDecode } from "jwt-decode";
 export default function useAuth() {
-    const { setUser } = useAuthContext();
+    const { user, setUser } = useAuthContext();
 
-    async function getUserDetails(token: string): Promise<IUser | null> {
+    function isUserLoggedIn(): boolean {
+        if (user == null) {
+            return false;
+        }
+
+        if (user.token == null) {
+            return false;
+        }
+
+        const decodedToken = jwtDecode(user.token);
+
+        if (decodedToken.exp == null) {
+            return false;
+        }
+
+        const dateNow = new Date();
+
+        if (decodedToken.exp < dateNow.getTime()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    async function getUserDetails(token: string): Promise<boolean> {
         try {
             const response = await fetch(
                 "https://sih-internal-backend-pm7h.onrender.com/auth/user",
@@ -19,17 +43,19 @@ export default function useAuth() {
             const data = await response.json();
 
             if (!response.ok || !data.success) {
-                return null;
+                return false;
             }
 
-            return {
+            const userData = {
                 name: data.user.name,
                 email: data.user.email,
                 token: token,
                 userId: data.user.id,
             };
+            setUser(userData);
+            return true;
         } catch {
-            return null;
+            return false;
         }
     }
 
@@ -63,13 +89,11 @@ export default function useAuth() {
 
             localStorage.setItem("token", data.token);
 
-            const user: IUser | null = await getUserDetails(data.token);
+            const success = await getUserDetails(data.token);
 
-            if (user == null) {
+            if (!success) {
                 return "There is some problem in creating your account.";
             }
-
-            setUser(user);
 
             return null;
         } catch {
@@ -102,13 +126,11 @@ export default function useAuth() {
 
             localStorage.setItem("token", data.token);
 
-            const user: IUser | null = await getUserDetails(data.token);
+            const success = await getUserDetails(data.token);
 
-            if (user == null) {
+            if (success) {
                 return "There is some problem in creating your account.";
             }
-
-            setUser(user);
 
             return null;
         } catch {
@@ -119,6 +141,8 @@ export default function useAuth() {
 
     return {
         signIn,
+        getUserDetails,
+        isUserLoggedIn,
         signUp,
         signOut,
     };
