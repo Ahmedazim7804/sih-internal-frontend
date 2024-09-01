@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import useAuth from "./hooks/use_auth";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function AuthDialog() {
     const navigate = useNavigate();
     const [serverError, setServerError] = useState<string>("");
     const [showLogin, setShowLogin] = useState<boolean>(false);
+
+    const [isLoading, setLoading] = useState<boolean>(false);
 
     const { signIn, signUp } = useAuth();
 
@@ -34,12 +37,14 @@ export default function AuthDialog() {
                 .min(8, "Password should be at least 8 characters."),
         }),
         onSubmit: async (values) => {
+            setLoading(true);
             setServerError("");
 
             const error = await signUp({
                 values: values,
             });
 
+            setLoading(false);
             if (error == null) {
                 showSnackbar();
                 navigate("/");
@@ -64,9 +69,11 @@ export default function AuthDialog() {
         }),
         onSubmit: async (values) => {
             setServerError("");
+            setLoading(true);
 
             const error = await signIn({ values: values });
 
+            setLoading(false);
             if (error == null) {
                 showSnackbar();
                 navigate("/");
@@ -94,6 +101,10 @@ export default function AuthDialog() {
     return (
         <div
             onClick={(event) => {
+                if (isLoading) {
+                    return;
+                }
+
                 if (event.target === event.currentTarget) {
                     navigate("/");
                 }
@@ -140,9 +151,16 @@ export default function AuthDialog() {
                                 )}
                                 <button
                                     type="submit"
-                                    className="w-full py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                                    className="w-full flex items-center justify-center py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-700 transition-colors"
                                 >
-                                    Login
+                                    {isLoading ? (
+                                        <ThreeDots
+                                            height={24}
+                                            color="#facc15"
+                                        />
+                                    ) : (
+                                        <p className="h-[24px]">Login</p>
+                                    )}
                                 </button>
                             </form>
                         ) : (
@@ -190,9 +208,16 @@ export default function AuthDialog() {
                                 )}
                                 <button
                                     type="submit"
-                                    className="w-full py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                                    className="w-full flex items-center justify-center py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-700 transition-colors"
                                 >
-                                    Sign Up
+                                    {isLoading ? (
+                                        <ThreeDots
+                                            height={24}
+                                            color="#facc15"
+                                        />
+                                    ) : (
+                                        <p className="h-[24px]">Sign Up</p>
+                                    )}
                                 </button>
                             </form>
                         )}
@@ -204,6 +229,7 @@ export default function AuthDialog() {
                                 onClick={() => setShowLogin(!showLogin)}
                                 className="ml-1 text-indigo-500 hover:underline"
                             >
+                                {/* <ThreeDots /> */}
                                 {showLogin ? "Sign Up" : "Login"}
                             </button>
                         </p>

@@ -1,7 +1,37 @@
+import { IUser } from "../interfaces/user_interface";
 import { useAuthContext } from "../providers/auth_provider";
 
 export default function useAuth() {
     const { setUser } = useAuthContext();
+
+    async function getUserDetails(token: string): Promise<IUser | null> {
+        try {
+            const response = await fetch(
+                "https://sih-internal-backend-pm7h.onrender.com/auth/user",
+                {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                return null;
+            }
+
+            return {
+                name: data.user.name,
+                email: data.user.email,
+                token: token,
+                userId: data.user.id,
+            };
+        } catch {
+            return null;
+        }
+    }
 
     async function signUp({
         values,
@@ -31,14 +61,15 @@ export default function useAuth() {
                 return "There is some problem in creating your account.";
             }
 
-            localStorage.setItem("sihtoken", data.token);
+            localStorage.setItem("token", data.token);
 
-            setUser({
-                email: values.email,
-                name: values.name,
-                token: data.token,
-                userId: "sdsd",
-            });
+            const user: IUser | null = await getUserDetails(data.token);
+
+            if (user == null) {
+                return "There is some problem in creating your account.";
+            }
+
+            setUser(user);
 
             return null;
         } catch {
@@ -69,19 +100,18 @@ export default function useAuth() {
                 return "There is some problem in logging in.";
             }
 
-            localStorage.setItem("sihtoken", data.token);
+            localStorage.setItem("token", data.token);
 
-            console.log(data);
+            const user: IUser | null = await getUserDetails(data.token);
 
-            setUser({
-                email: values.email,
-                name: "HELLO",
-                token: data.token,
-                userId: "sdsd",
-            });
+            if (user == null) {
+                return "There is some problem in creating your account.";
+            }
+
+            setUser(user);
 
             return null;
-        } catch (_) {
+        } catch {
             return "There is some problem in logging in.";
         }
     }

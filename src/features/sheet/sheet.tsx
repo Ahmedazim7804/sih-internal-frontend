@@ -35,7 +35,7 @@ export default function Sheet() {
     const { syncData } = useSheet();
 
     return (
-        <div className="w-full h-full z-0 flex flex-col">
+        <div className="w-full h-full z-0 flex flex-col font-lexend">
             <TopBar></TopBar>
             <Workbook
                 key={key.toString()}
