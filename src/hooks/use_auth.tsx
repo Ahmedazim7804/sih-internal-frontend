@@ -1,7 +1,7 @@
 import { useAuthContext } from "../context/auth_provider";
 import { jwtDecode } from "jwt-decode";
+import useUserSheets from "./use_usersheets";
 export default function useAuth() {
-
     // function isUserLoggedIn(): boolean {
     //     if (user == null) {
     //         return false;
@@ -87,9 +87,7 @@ export default function useAuth() {
 
             localStorage.setItem("token", data.token);
 
-return null
-
-
+            return null;
         } catch {
             return "There is some problem in creating your account.";
         }
@@ -119,8 +117,6 @@ return null
             }
 
             localStorage.setItem("token", data.token);
-
-            
 
             return null;
         } catch {

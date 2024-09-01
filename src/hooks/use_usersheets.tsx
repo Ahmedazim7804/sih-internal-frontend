@@ -3,9 +3,10 @@ import { useAuthContext } from "../context/auth_provider";
 import { IUserSheets } from "../types";
 
 function getUserSheet(token: string | null) {
-    if (!token) {
+    if (token === null) {
         return Error("Token not found");
     }
+
     return fetch(
         "https://sih-internal-backend-pm7h.onrender.com/spreadsheet/",
         {
@@ -18,13 +19,19 @@ function getUserSheet(token: string | null) {
     ).then((res) => res.json());
 }
 
-export default function useUserSheets() {
+export default function useUserSheets(token: any) {
+    const tokenNull: boolean = token === undefined || token === null;
+
+    console.log(tokenNull);
+
+    console.log(token);
+
     const { isPending, error, data } = useQuery<IUserSheets>({
         queryKey: ["userSheets"],
         queryFn: async () => {
             try {
                 const result = await getUserSheet(
-                    localStorage.getItem("token")
+                    tokenNull ? localStorage.getItem("token") : token
                 );
                 return result;
             } catch {

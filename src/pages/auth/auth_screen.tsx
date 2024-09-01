@@ -15,10 +15,11 @@ export default function AuthDialog() {
     const [isLoading, setLoading] = useState<boolean>(false);
 
     const { signIn, signUp } = useAuth();
+    const token = useGetToken();
+    const expiredToken = useIsTokenExpired(token);
 
     useEffect(() => {
-        const token  = useGetToken()
-        if (token && useIsTokenExpired(token)) {
+        if (expiredToken) {
             navigate("/auth");
         }
     }, [navigate]);
@@ -47,9 +48,13 @@ export default function AuthDialog() {
             });
 
             setLoading(false);
+
             if (error == null) {
                 showSnackbar();
-                navigate("/");
+                navigate("/", {
+                    replace: true,
+                    state: localStorage.getItem("token"),
+                });
             } else {
                 setServerError(error);
             }
@@ -78,7 +83,10 @@ export default function AuthDialog() {
             setLoading(false);
             if (error == null) {
                 showSnackbar();
-                navigate("/");
+                navigate("/", {
+                    replace: true,
+                    state: localStorage.getItem("token"),
+                });
             } else {
                 setServerError(error);
             }
