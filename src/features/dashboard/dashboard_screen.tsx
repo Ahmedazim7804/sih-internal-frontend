@@ -10,14 +10,14 @@ export default function DashboardScreen() {
         <div className="flex flex-col w-lvw h-lvh font-lexend">
             <DashboardTopBar />
 
-            <div className="mt-16">
-                <SpreadSheetList>
-                    <SpreadSheetHeaders />
-                    <SpreadsheetListItem />
-                    <SpreadsheetListItem />
-                    <SpreadSheetAdd />
-                </SpreadSheetList>
-            </div>
+            {/* <div className="mt-16"> */}
+            <SpreadSheetList>
+                <SpreadSheetHeaders />
+                <SpreadsheetListItem />
+                <SpreadsheetListItem />
+                <SpreadSheetAdd />
+            </SpreadSheetList>
+            {/* </div> */}
         </div>
     );
 }
