@@ -5,6 +5,7 @@ import { FaLink } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import useCollabrators from "./hooks/use_collabrators";
 import PeopleWithAccess from "./components/people_with_access";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function ShareScreen() {
     const navigate = useNavigate();
@@ -52,7 +53,9 @@ export default function ShareScreen() {
                             );
                         })
                     ) : (
-                        <></>
+                        <div className="w-full flex justify-center items-center pb-2">
+                            <ThreeDots color="#facc15" />
+                        </div>
                     )}
                 </div>
 

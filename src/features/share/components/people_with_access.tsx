@@ -1,5 +1,3 @@
-import React from "react";
-import ProfileComponent from "../../sheet/components/profile_component";
 import { IconContext } from "react-icons";
 import { FaUser } from "react-icons/fa";
 import { ICollabrator } from "../interfaces/collabrator_interface";
