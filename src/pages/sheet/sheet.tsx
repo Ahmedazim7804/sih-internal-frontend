@@ -51,6 +51,8 @@ export default function Sheet() {
     }
     const sheetId = params.id;
 
+    localStorage.setItem("currentSheet", sheetId!);
+
     const userSheets = localStorage.getItem("userSheets");
 
     if (userSheets === null || !userSheets.includes(sheetId!)) {
