@@ -1,14 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { IconContext } from "react-icons";
-import { IoMdAdd } from "react-icons/io";
 import { FaLink } from "react-icons/fa";
+import { IoMdAdd } from "react-icons/io";
+import { ThreeDots } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
+import { useGetToken } from "../../hooks/auth/useGetToken";
 import useCollabrators from "../../hooks/use_collabrators";
 import PeopleWithAccess from "./components/people_with_access";
-import { ThreeDots } from "react-loader-spinner";
-import useaddCollabrators from "../../hooks/use_addCollaborators";
-import { useGetToken } from "../../hooks/auth/useGetToken";
-import { useSheetContext } from "../../context/sheet_provider";
 
 export default function ShareScreen() {
     const navigate = useNavigate();
@@ -21,7 +19,7 @@ export default function ShareScreen() {
         status: "NONE" | "ERROR" | "SUCCESS";
         message: string;
     }>({ status: "NONE", message: "" });
-    const { isPending, error, data } = useCollabrators({
+    const { data } = useCollabrators({
         spreadsheetId: sheetId!,
         token: useGetToken(),
     });

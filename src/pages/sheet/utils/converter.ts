@@ -1,4 +1,4 @@
-import { Cell, CellWithRowAndCol } from "@fortune-sheet/core";
+import { CellWithRowAndCol } from "@fortune-sheet/core";
 export function stringToMatrix(text: string, delimiter: string = ",") {
     const rows = text.split("\n");
     const matrix = rows.map((row) => row.split(delimiter));

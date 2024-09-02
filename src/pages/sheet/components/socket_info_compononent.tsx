@@ -1,7 +1,4 @@
-import React from "react";
-
 export default function SocketInfoCompononent() {
-    const connectedCss: string = "shadow-[0_0_10px_5px_#eab308] bg-yellow-400";
     const disconnectedCss: string = "shadow-[0_0_10px_5px_#ef4444] bg-red-400";
 
     return (

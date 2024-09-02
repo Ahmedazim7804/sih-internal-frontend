@@ -89,7 +89,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
         console.log(user);
 
-        setuser((value) => user);
+        setuser(() => user);
     };
     const logout = () => {
         localStorage.removeItem("token");

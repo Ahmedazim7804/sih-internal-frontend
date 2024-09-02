@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import DashboardTopBar from "./dashboard_top_bar";
 import SpreadSheetList from "./components/spread_sheet_list";
 import useUserSheets from "../../hooks/use_usersheets";
-import { redirect, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { IUserSheets } from "../../types";
-import useAuth from "../../hooks/use_auth";
-import { useAuthContext } from "../../context/auth_provider";
 
 export default function DashboardScreen() {
     const redirect = useNavigate();

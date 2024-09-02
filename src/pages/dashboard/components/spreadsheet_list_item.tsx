@@ -1,6 +1,4 @@
-import React from "react";
 import { IconContext } from "react-icons";
-import { TbFileSpreadsheet } from "react-icons/tb";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import { BsFileEarmarkSpreadsheetFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";

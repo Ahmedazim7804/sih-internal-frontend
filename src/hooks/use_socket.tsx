@@ -1,7 +1,5 @@
-import { useSocketContext } from "../context/socket_context";
-import { Op } from "@fortune-sheet/core";
-import useAuth from "./use_auth";
 import { useAuthContext } from "../context/auth_provider";
+import { useSocketContext } from "../context/socket_context";
 import { ISocketRecieveData } from "../types";
 export function useSocket() {
     const socket = useSocketContext();
@@ -36,12 +34,8 @@ export function useSocket() {
     async function send({
         data,
         spreadSheetId,
-        isForBackend,
-        isOps,
     }: {
         data: ISocketRecieveData;
-        isForBackend: boolean;
-        isOps: boolean;
         spreadSheetId: string;
     }) {
         await socket.emit(

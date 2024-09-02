@@ -1,6 +1,10 @@
-import React from "react";
-
-export default function SearchBar({setquery, submitsearch}:{setquery : (query: string) => void, submitsearch: () => void}) {
+export default function SearchBar({
+    setquery,
+    submitsearch,
+}: {
+    setquery: (query: string) => void;
+    submitsearch: () => void;
+}) {
     return (
         <form className="w-1/3">
             <div className="relative w-full">
@@ -13,8 +17,11 @@ export default function SearchBar({setquery, submitsearch}:{setquery : (query: s
                     onChange={(e) => setquery(e.target.value)}
                 />
                 <button
-    type="submit"
-                    onClick={(e)=>{e.preventDefault();submitsearch()}}
+                    type="submit"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        submitsearch();
+                    }}
                     className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-yellow-400 rounded-e-lg border border-yellow-400 hover:bg-yellow-500 focus:ring-1 focus:outline-none focus:ring-yellow-300"
                 >
                     <svg

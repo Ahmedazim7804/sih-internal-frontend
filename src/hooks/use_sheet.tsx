@@ -1,4 +1,3 @@
-import { useContext } from "react";
 // import { useSheetContext } from "../../../context/sheet_provider";
 
 import { Sheet, CellMatrix, CellWithRowAndCol } from "@fortune-sheet/core";
@@ -7,10 +6,9 @@ import {
     stringToMatrix,
     matrixToCellMatrix,
 } from "../pages/sheet/utils/converter";
-import { useQuery } from "@tanstack/react-query";
 
 export default function useSheet() {
-    const { setSheet, wbInstance } = useSheetContext();
+    const { setSheet } = useSheetContext();
 
     function loadDataFromCsv(data: string) {
         const matrix = stringToMatrix(data);
@@ -20,10 +18,6 @@ export default function useSheet() {
 
         // saveToLocalStorage(cellMatrix);
         // setSheet(cellMatrix);
-    }
-
-    async function saveToLocalStorage(data: CellWithRowAndCol[]) {
-        await localStorage.setItem("sheet", JSON.stringify(data));
     }
 
     function syncData(data: Sheet[]) {

@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { ICollabrators } from "../types" 
-import { useAuthContext } from "../context/auth_provider";
+import { ICollabrators } from "../types";
 
 function getCollabrators({
     spreadsheetId,
@@ -9,11 +8,10 @@ function getCollabrators({
     spreadsheetId: string;
     token: string | null;
 }) {
-    if(!token) {
-     return  Promise.resolve({data: []})
+    if (!token) {
+        return Promise.resolve({ data: [] });
     }
     return fetch(
-
         `https://sih-internal-backend-pm7h.onrender.com/spreadsheet/collaborators?SpreadSheetId=${spreadsheetId}`,
         {
             headers: {
@@ -27,12 +25,11 @@ function getCollabrators({
 
 export default function useCollabrators({
     spreadsheetId,
-    token
+    token,
 }: {
     spreadsheetId: string;
     token: string | null;
 }) {
-
     const { isPending, error, data } = useQuery<ICollabrators>({
         queryKey: ["collabrators"],
         queryFn: () => getCollabrators({ spreadsheetId, token }),

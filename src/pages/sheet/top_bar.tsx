@@ -1,12 +1,8 @@
-import React from "react";
 import ShareButton from "./components/share_button";
-
 import FilePickerButton from "./components/file_picker_button";
 import ProfileComponent from "./components/profile_component";
-import { useSheetContext } from "../../context/sheet_provider";
 import { useSocket } from "../../hooks/use_socket";
 import Logo from "../../components/logo";
-import SocketInfoCompononent from "./components/socket_info_compononent";
 
 export default function TopBar() {
     // const { sheet, previousSheet, setSheet, updateData } = useSheetContext();

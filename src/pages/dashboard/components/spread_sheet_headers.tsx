@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function SpreadSheetHeaders() {
     return (
         <div className="flex cursor-pointer flex-row items-center py-4 px-4">

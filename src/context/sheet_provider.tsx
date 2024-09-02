@@ -1,5 +1,5 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { CellWithRowAndCol, Op, Cell, Sheet } from "@fortune-sheet/core";
+import { createContext, useContext, useRef } from "react";
+import { CellWithRowAndCol, Op, Cell } from "@fortune-sheet/core";
 import { WorkbookInstance } from "@fortune-sheet/react";
 import { useSocket } from "../hooks/use_socket";
 
@@ -13,10 +13,10 @@ interface ISheetContext {
 
 export const SheetContext = createContext<ISheetContext>({
     sheet: [],
-    setSheet: (data, emit) => {},
-    setWorkBookInstance: (data) => {},
+    setSheet: () => {},
+    setWorkBookInstance: () => {},
     wbInstance: null,
-    executeOperation: (operation) => {},
+    executeOperation: () => {},
 });
 
 export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
@@ -57,8 +57,6 @@ export function SheetProvider({ children }: { children: Array<JSX.Element> }) {
                     isOps: false,
                     data: data,
                 },
-                isForBackend: true,
-                isOps: false,
                 spreadSheetId: currentSheet.id!,
             });
         }

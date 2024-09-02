@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { IconContext } from "react-icons";
 import { FaUser } from "react-icons/fa";
 import { FaCaretDown } from "react-icons/fa";
 import { FaCaretUp } from "react-icons/fa";
-import { IoIosLogOut } from "react-icons/io";
 import { useAuthContext } from "../../../context/auth_provider";
 import { useNavigate } from "react-router-dom";
 export default function ProfileComponent({

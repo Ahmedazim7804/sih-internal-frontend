@@ -11,7 +11,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ThreeDots } from "react-loader-spinner";
 import { useGetToken } from "../../hooks/auth/useGetToken";
-import { useAuthContext } from "../../context/auth_provider";
 import { ISocketRecieveData } from "../../types";
 
 function getSpreadSheetFromBackend(token: string, sheetId: string) {
@@ -31,8 +30,6 @@ export default function Sheet() {
 
     const params = useParams();
 
-    const { user } = useAuthContext();
-
     const token = useGetToken();
 
     useEffect(() => {
@@ -40,7 +37,7 @@ export default function Sheet() {
             navigation("/");
         }
     }, [navigation]);
-    const { sheet, executeOperation, setWorkBookInstance, setSheet } =
+    const { executeOperation, setWorkBookInstance, setSheet } =
         useSheetContext();
     const { connect, disconnect, listen, send, subscribe, stopListen } =
         useSocket();
@@ -117,8 +114,6 @@ export default function Sheet() {
                             isOps: true,
                             data: newOps,
                         },
-                        isForBackend: false,
-                        isOps: true,
                         spreadSheetId: sheetId!,
                     });
                 }}

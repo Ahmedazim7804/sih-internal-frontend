@@ -1,6 +1,6 @@
 import { IconContext } from "react-icons";
 import { FaUser } from "react-icons/fa";
-import { ICollabrator } from "../interfaces/collabrator_interface";
+import { ICollabrator } from "../../../types";
 
 export default function PeopleWithAccess({
     collabrator,
