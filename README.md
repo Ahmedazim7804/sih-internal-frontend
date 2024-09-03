@@ -29,7 +29,7 @@ Welcome to the frontend repository of **SmartSheets**! SmartSheets is a collabor
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/smartsheets-frontend.git
+   git clone https://github.com/Ahmedazim7804/sih-internal-frontend
    ```
 2. Navigate to the project directory: 
    ```bash
